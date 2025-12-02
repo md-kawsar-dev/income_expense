@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('expenses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('scope_id');
-            $table->string('category_type');
-            $table->string('category_name');
-            $table->decimal('amount')->default(0);
+            $table->unsignedBigInteger('category_id');
+            $table->decimal('amount', 15, 2);
+            $table->date('date');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
-            // foreign key scope_id by users table
             $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
-            // index 
-            $table->index('scope_id');
-
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('expenses');
     }
 };

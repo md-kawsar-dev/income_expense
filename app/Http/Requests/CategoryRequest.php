@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\CategoryEnum;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -23,21 +24,25 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // en and bn unique if scope_id is same ignore id
-            'en'=>[
+            'category_type' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories','en')->where('scope_id','==',scope_id())->ignore($this->id),
+                // enum values
+                Rule::enum(CategoryEnum::class),
             ],
-            'bn'=>[
+            'category_name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('categories','bn')->where('scope_id','==',scope_id())->ignore($this->id),
+                Rule::unique('categories', 'category_name')
+                    ->where('scope_id', scope_id())
+                    ->where('category_type', $this->input('category_type'))
+                    ->ignore($this->route('category')),
             ],
-            'amount'=>'nullable|numeric'
-            
+
+            'amount' => 'nullable|numeric'
+
 
         ];
     }

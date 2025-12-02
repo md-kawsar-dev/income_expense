@@ -6,21 +6,17 @@ use App\Trait\Filterable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class IncomeBy extends Model
 {
     use SoftDeletes,Filterable;
-
-    protected $table = 'categories';
-
+    protected $table = 'income_bies';
     protected $fillable = [
         'scope_id',
-        'category_type',
-        'category_name',
-        'amount',
+        'name',
     ];
 
     public function scope()
     {
-        return $this->belongsTo(User::class,'id','scope_id');
+        return $this->belongsTo(User::class, 'scope_id');
     }
 }

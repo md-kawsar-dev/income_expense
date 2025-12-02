@@ -3,11 +3,13 @@
 namespace App\Exceptions;
 
 use BadMethodCallException;
+use ErrorException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
@@ -39,36 +41,21 @@ class Handler extends ExceptionHandler
         //
     }
 
-    /**
-     * Convert an authentication exception into a JSON response for API requests.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        // যদি request API বা JSON চায় → JSON রেসপন্স
-        if ($request->expectsJson() || $request->is('api/*')) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Unauthenticated. Please login.',
-                'errors' => [
-                    'token' => ['Authentication token missing or invalid.']
-                ]
-            ], 401);
-        }
-
-        // অন্যথায় default behaviour (redirect)
-        return redirect()->guest('/login');
-    }
-
-    /**
-     * Render exceptions into HTTP responses.
-     */
     public function render($request, Throwable $exception)
     {
-        if (($request->expectsJson() || $request->is('api/*')) &&$exception instanceof BadMethodCallException) {
+
+        if(Str::contains($request->url(), '/api/')){
+            if($exception instanceof ErrorException){
+                return response()->json([
+                    'status' => false,
+                    'message' => $exception->getMessage(),
+                    'error' => config('app.debug') ? $exception->getTraceAsString() : null
+                ], 500);
+            }
+                
+        }
+
+        if (($request->expectsJson() || $request->is('api/*')) && $exception instanceof BadMethodCallException) {
             return response()->json([
                 'status' => false,
                 'message' => 'Invalid method call. The requested function does not exist.',
@@ -128,7 +115,14 @@ class Handler extends ExceptionHandler
                 'error' => config('app.debug') ? $exception->getMessage() : null
             ], 500);
         }
-
+        // InvalidArgumentException
+        if (($request->expectsJson() || $request->is('api/*')) && $exception instanceof \InvalidArgumentException) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid argument provided.',
+                'error' => $exception->getMessage(),
+            ], 500);
+        }
         return parent::render($request, $exception);
     }
 }

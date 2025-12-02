@@ -17,10 +17,10 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
         try {
-            DB::transaction(function () use ($validated) {
-                $user = $this->userService->create($validated);
-                return success(new UserResource($user), 'User registered successfully', 200);
+            $result = DB::transaction(function () use ($validated) {
+                return $this->userService->create($validated);
             });
+            return success(new UserResource($result), 'User registered successfully', 200);
         } catch (\Exception $th) {
             return error('Registration failed: ' . $th->getMessage(), 500);
         }

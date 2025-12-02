@@ -14,6 +14,6 @@ if(!function_exists('error')){
         return response()->json([
             'status' => false,
             'message' => $message,
-        ], $code);
+        ], $code?: 400);
     }
 }

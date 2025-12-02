@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('scope_id');
-            $table->string('category_type');
-            $table->string('category_name');
-            $table->decimal('amount')->default(0);
+            $table->unsignedBigInteger('income_by_id');
+            $table->decimal('amount', 15, 2);
+            $table->date('date');
+            $table->text('description')->nullable();
+            $table->foreign('income_by_id')->references('id')->on('income_bies')->onDelete('cascade');
+            $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
-            // foreign key scope_id by users table
-            $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
-            // index 
-            $table->index('scope_id');
-
         });
     }
 
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('incomes');
     }
 };
