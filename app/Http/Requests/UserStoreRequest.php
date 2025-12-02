@@ -25,10 +25,27 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            // role_id default to 2 (user) in UserService
+            'role_id' => 'nullable|integer|exists:roles,id',
             'username' => 'nullable|string|max:255|unique:users',
             'email' => 'nullable|string|email|max:255|unique:users',
             'scope_id' => 'nullable|integer|exists:users,id',
             'password' => 'required|string|min:6|confirmed',
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Name is required',
+            'password.required' => 'Password is required',
+            'password.confirmed' => 'Password confirmation does not match',
+            'email.email' => 'Email must be a valid email address',
+            'email.unique' => 'Email has already been taken',
+            'username.unique' => 'Username has already been taken',
+            'role_id.exists' => 'Role does not exist',
+            'password.min' => 'Password must be at least 6 characters',
+            'password.confirmed' => 'Password confirmation does not match',
+
         ];
     }
    

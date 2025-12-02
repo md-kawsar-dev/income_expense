@@ -12,6 +12,8 @@ class UserService
         $userName = strtolower(substr($data['name'], 0, 3)) . rand(1000, 9999);
         $data['username'] = $data['username'] ?? $userName;
         $data['password'] = Hash::make($data['password']);
+        $data['role_id'] = $data['role_id'] ?? 2; // default role_id to 2 (user)
+        $data['scope_id'] = $data['scope_id'] ?? scope_id();
         
         return User::create($data);
     }

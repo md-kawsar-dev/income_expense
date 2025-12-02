@@ -4,12 +4,15 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Policies\UserPolicy;
 use App\Trait\Filterable;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+#[UsePolicy(UserPolicy::class)]
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -23,6 +26,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'role_id',
+        'scope_id',
         'name',
         'email',
         'username',
@@ -56,5 +61,9 @@ class User extends Authenticatable
     public function categories()
     {
         return $this->hasMany(Category::class,'scope_id','id');
+    }
+    public function role()
+    {
+        return $this->belongsTo(Role::class,'role_id','id');
     }
 }

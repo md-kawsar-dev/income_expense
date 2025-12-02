@@ -20,6 +20,7 @@ class AuthController extends Controller
             $result = DB::transaction(function () use ($validated) {
                 return $this->userService->create($validated);
             });
+            $result->load('role');
             return success(new UserResource($result), 'User registered successfully', 200);
         } catch (\Exception $th) {
             return error('Registration failed: ' . $th->getMessage(), 500);
@@ -37,6 +38,7 @@ class AuthController extends Controller
             }
             $token = $user->createToken('auth_token')->plainTextToken;
             $user->token = $token;
+            $user->load('role');
             return success(new UserResource($user), 'User logged in successfully', 200);
         } catch (\Exception $th) {
             return error('Login failed: ' . $th->getMessage(), 500);

@@ -16,6 +16,7 @@ class CategoryResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'scope_id' => $this->scope_id,
             'category_type' => $this->category_type,
             'category_name' => $this->category_name,
             'amount' => $this->amount,

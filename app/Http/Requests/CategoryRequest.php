@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\CategoryEnum;
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -14,6 +15,11 @@ class CategoryRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    //    if($this->route('category')){
+    //     return $this->user()->can('update',$this->route('category'));
+    //    } else {
+    //     return $this->user()->can('create', Category::class);
+    //    }
     }
 
     /**
@@ -44,6 +50,13 @@ class CategoryRequest extends FormRequest
             'amount' => 'nullable|numeric'
 
 
+        ];
+    }
+    public function messages(): array
+    {
+        return [
+            'category_name.unique' => 'The category name has already been taken for this category type.',
+            'category_type.enum' => 'The selected category type is invalid. Allowed types are: ' . implode(', ', CategoryEnum::values()),
         ];
     }
 }

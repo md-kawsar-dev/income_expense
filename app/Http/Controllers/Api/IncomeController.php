@@ -62,7 +62,7 @@ class IncomeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(IncomeRequest $request, string $id)
     {
          $data = $request->validated();
         try{

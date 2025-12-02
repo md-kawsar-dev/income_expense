@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\CategoryEnum;
+use App\Models\Category;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,7 +16,11 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('scope_id');
-            $table->string('category_type');
+            $table->enum('category_type', [
+                CategoryEnum::NEED->value,
+                CategoryEnum::WANT->value,
+                CategoryEnum::SAVINGS->value,
+            ]);
             $table->string('category_name');
             $table->decimal('amount')->default(0);
             $table->timestamps();

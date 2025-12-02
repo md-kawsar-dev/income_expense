@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\UserController;
+use Illuminate\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate as FacadesGate;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
@@ -10,10 +12,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [AuthController::class, 'profile']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    // Route::get('/users', [UserController::class, 'index']);
     Route::get('/users', [UserController::class, 'index']);
-
+    Route::post('/users/add', [UserController::class, 'store']);
+    
     // category
-    Route::apiResource('/category',App\Http\Controllers\Api\CategoryController::class);
+    Route::apiResource('/category',App\Http\Controllers\Api\CategoryController::class);//multiple permissions handled in controller
 
     // budget
     Route::post('/budget/add/previous-month', [App\Http\Controllers\Api\BudgetController::class, 'previousMonthBudgetAdd']);
