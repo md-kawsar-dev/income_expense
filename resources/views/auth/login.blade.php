@@ -21,6 +21,7 @@
 
         <!-- Icons css -->
         <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
     </head>
     
     <body class="authentication-bg position-relative">
@@ -103,17 +104,18 @@
         </footer>
         <!-- Vendor js -->
         <script src="assets/js/vendor.min.js"></script>
-        
+         <script src="assets/js/sweetalert2.min.js"></script>
         <!-- App js -->
         <script src="assets/js/app.min.js"></script>
-        <script src="assets/js/login.js"></script>
+        <script src="assets/js/data/login.js"></script>
+        <script src="assets/js/data/utility.js"></script>
         <script>
             $(document).ready(function(){
                 $(".login_btn").on('click',function(){
                     let login=$("#login").val();
                     let password=$("#password").val();
                     if(login=='' || password==''){
-                        alert("All fields are required");
+                        Tost("All fields are required",'warning');
                         return false;
                     }
                     $.ajax({
@@ -127,11 +129,11 @@
                            
                             setUserData(response.data);
                             window.location.href = "/dashboard";
-                            alert("Login successful");
+                            Tost("Login successful");
                             // You can redirect the user or perform other actions here
                         },
                         error: function(xhr, status, error) {
-                            alert("Login failed: " + xhr.responseJSON.message);
+                            Tost("Login failed: " + xhr.responseJSON.message, "error");
                         }
                     });
                 })

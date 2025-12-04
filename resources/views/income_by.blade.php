@@ -8,7 +8,7 @@
         <div class="col-md-12">
             <h2 class="text-center">Income By </h2>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 add_column">
             <div class="card">
                 <div class="card-header"><h3 class="card-title"><span class="add_update_text">Add</span> Income By</h3></div>
                 <div class="card-body">
@@ -21,14 +21,15 @@
                         </div>
                         <div class="row">
                             <div class="mb-3">
-                                <button type="button" class="btn btn-primary" onclick="IncomeBySubmit()"> <span class="add_update_text">Add</span> Income By </button>
+                                <input type="hidden" name="income_by_id" id="income_by_id" value="">
+                                <button type="button" class="btn btn-primary"  id="incomeBySubmitButton"> <span class="add_update_text">Add</span> Income By </button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 list_column">
             <div class="card">
                 <div class="card-header"><h3 class="card-title">Income By List</h3></div>
                 <div class="card-body">

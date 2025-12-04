@@ -22,7 +22,7 @@ return new class extends Migration
                 CategoryEnum::SAVINGS->value,
             ]);
             $table->string('category_name');
-            $table->decimal('amount')->default(0);
+            $table->decimal('amount')->default(0)->nullable();
             $table->timestamps();
             $table->softDeletes();
             // foreign key scope_id by users table

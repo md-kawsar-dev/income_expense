@@ -31,6 +31,9 @@
     <link href="assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet"
         type="text/css" />
 
+    <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
+
     <script src="assets/js/data/login.js"></script>
 </head>
 
@@ -627,25 +630,26 @@
 
 
 
-    <!-- Vendor js -->
-    <script src="assets/js/vendor.min.js"></script>
+     <!-- Vendor js -->
+        <script src="assets/js/vendor.min.js"></script>
 
-    <!-- Daterangepicker js -->
-    <script src="assets/vendor/daterangepicker/moment.min.js"></script>
-    <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
+        <!-- Daterangepicker js -->
+        <script src="assets/vendor/daterangepicker/moment.min.js"></script>
+        <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
+        
+        <!-- Apex Charts js -->
+        <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
 
-    <!-- Apex Charts js -->
-    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+        <!-- Vector Map js -->
+        <script src="assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
-    <!-- Vector Map js -->
-    <script src="assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-    <script src="assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+        <!-- Dashboard App js -->
+        <script src="assets/js/pages/demo.dashboard.js"></script>
 
-    <!-- Dashboard App js -->
-    <script src="assets/js/pages/demo.dashboard.js"></script>
+        <!-- App js -->
+        <script src="assets/js/app.min.js"></script>
 
-    <!-- App js -->
-    <script src="assets/js/app.min.js"></script>
 
     <!-- Datatables js -->
     <script src="assets/vendor/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -655,6 +659,9 @@
 
     <!-- Datatable Init js -->
     <script src="assets/js/pages/demo.datatable-init.js"></script>
+    <script src="assets/js/sweetalert2.min.js"></script>
+    <script src="assets/js/data/utility.js"></script>
+    @yield('script')
     <script>
         let loginUserName = document.querySelector('.login_user_name');
         let loginUserRole = document.querySelector('.login_user_role');
@@ -666,7 +673,7 @@
             }
         });
     </script>
-    @yield('script')
+    
 </body>
 
 <!-- Mirrored from coderthemes.com/hyper/saas/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 27 Feb 2024 08:07:33 GMT -->

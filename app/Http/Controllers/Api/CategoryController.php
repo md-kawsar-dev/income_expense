@@ -23,7 +23,7 @@ class CategoryController extends Controller
     }
     public function index(Request $request)
     {
-        $this->authorize('viewAny', Category::class);
+        // $this->authorize('viewAny', Category::class);
         try {
             $categories = $this->categoryService->list($request->all());
             return CategoryResource::collection($categories);
@@ -34,7 +34,7 @@ class CategoryController extends Controller
     
     public function store(CategoryRequest $request)
     {
-        $this->authorize('create', Category::class);
+        // $this->authorize('create', Category::class);
         $data = $request->validated();
         try{
             $result = DB::transaction(function() use($data){
@@ -58,7 +58,7 @@ class CategoryController extends Controller
     public function update(CategoryRequest $request,Category $category)
     {
         
-        $this->authorize('update', $category);
+        // $this->authorize('update', $category);
         $data = $request->validated();
         try{
             $result = DB::transaction(function()use($data, $category){
@@ -71,7 +71,7 @@ class CategoryController extends Controller
     }
     public function destroy(int $id)
     {
-        $this->authorize('delete', Category::class);
+        // $this->authorize('delete', Category::class);
         try {
             DB::transaction(function () use ($id) {
                 return $this->categoryService->destroy($id);
