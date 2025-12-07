@@ -32,6 +32,8 @@
         type="text/css" />
 
     <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
+    <!-- Select2 css -->
+    <link href="assets/vendor/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="assets/css/custom.css">
 
     <script src="assets/js/data/login.js"></script>
@@ -536,16 +538,15 @@
 
 
                     <li class="side-nav-item">
-                        <a href="/" class="side-nav-link">
+                        <a href="/dashboard" class="side-nav-link">
                             <i class="uil-home-alt"></i>
                             <span> Dashboards </span>
                         </a>
                     </li>
-
                     <li class="side-nav-item">
-                        <a href="/budget-plan" class="side-nav-link">
+                        <a href="/budget" class="side-nav-link">
                             <i class="uil-comments-alt"></i>
-                            <span> Budget Plan </span>
+                            <span> Budget </span>
                         </a>
                     </li>
                     <li class="side-nav-item">
@@ -558,6 +559,12 @@
                         <a href="/expense" class="side-nav-link">
                             <i class="uil-comments-alt"></i>
                             <span> Expense </span>
+                        </a>
+                    </li>
+                    <li class="side-nav-item">
+                        <a href="/budget-plan" class="side-nav-link">
+                            <i class="uil-comments-alt"></i>
+                            <span> Budget Plan </span>
                         </a>
                     </li>
                     <li class="side-nav-item">
@@ -630,25 +637,27 @@
 
 
 
-     <!-- Vendor js -->
-        <script src="assets/js/vendor.min.js"></script>
+    <!-- Vendor js -->
+    <script src="assets/js/vendor.min.js"></script>
 
-        <!-- Daterangepicker js -->
-        <script src="assets/vendor/daterangepicker/moment.min.js"></script>
-        <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
-        
-        <!-- Apex Charts js -->
-        <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <!-- Daterangepicker js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.8/jquery.inputmask.min.js"></script>
 
-        <!-- Vector Map js -->
-        <script src="assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+    <script src="assets/vendor/daterangepicker/moment.min.js"></script>
+    <script src="assets/vendor/daterangepicker/daterangepicker.js"></script>
 
-        <!-- Dashboard App js -->
-        <script src="assets/js/pages/demo.dashboard.js"></script>
+    <!-- Apex Charts js -->
+    <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
 
-        <!-- App js -->
-        <script src="assets/js/app.min.js"></script>
+    <!-- Vector Map js -->
+    <script src="assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+    <script src="assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+
+    <!-- Dashboard App js -->
+    <script src="assets/js/pages/demo.dashboard.js"></script>
+
+    <!-- App js -->
+    <script src="assets/js/app.min.js"></script>
 
 
     <!-- Datatables js -->
@@ -659,6 +668,8 @@
 
     <!-- Datatable Init js -->
     <script src="assets/js/pages/demo.datatable-init.js"></script>
+    <!--  Select2 Js -->
+    <script src="assets/vendor/select2/js/select2.min.js"></script>
     <script src="assets/js/sweetalert2.min.js"></script>
     <script src="assets/js/data/utility.js"></script>
     @yield('script')
@@ -672,8 +683,23 @@
                 loginUserRole.textContent = userData.role.name;
             }
         });
+        $(document).on("select2:open", () => {
+            document.querySelector(".select2-search__field").focus();
+        });
+        $(".datepicker_year_month").inputmask("9999-99"); // mask YYYY-MM
+        $(".datepicker_year_month").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: true,
+            autoApply: true,
+            locale: {
+                format: "YYYY-MM"
+            }
+        }, function(start) {
+            $(".datepicker_year_month").val('');
+        });
     </script>
-    
+
 </body>
 
 <!-- Mirrored from coderthemes.com/hyper/saas/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 27 Feb 2024 08:07:33 GMT -->

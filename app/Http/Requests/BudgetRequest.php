@@ -33,7 +33,7 @@ class BudgetRequest extends FormRequest
                                  ->where('year', date('Y', strtotime($this->year_month)))
                                  ->where('month', date('m', strtotime($this->year_month)))
                                  ->where('deleted_at', null);
-                })->ignore($this->route('budget'))
+                })->ignore($this->route('budget_plan'))
             ],
             'amount' => 'required|numeric'
         ];

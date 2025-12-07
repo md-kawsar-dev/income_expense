@@ -4,12 +4,21 @@ namespace App\Services;
 
 use App\Models\Budget;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-class BudgetService
+class BudgetPlanService
 {
     public function list(array $filters = [])
     {
+        if (isset($filters['year_month'])) {
+            $filters['year'] = date('Y', strtotime($filters['year_month']));
+            $filters['month'] = date('m', strtotime($filters['year_month']));
+            unset($filters['year_month']);
+        } elseif (!isset($filters['year']) && !isset($filters['month'])) {
+            $filters['year'] = date('Y');
+            $filters['month'] = date('m');
+        }
         $query = Budget::query()->where('scope_id', scope_id());
 
         // Apply filters if any
@@ -18,6 +27,11 @@ class BudgetService
                 $query->where($key, $value);
             }
         }
+        // sort by category_type first Need second Want and  Savings
+        $query->orderByRaw("(SELECT FIELD(category_type, 'Need', 'Want', 'Savings')
+                     FROM categories
+                     WHERE categories.id = budgets.category_id)");
+        $query->orderBy('id', 'asc');
         return $query->get();
     }
     public function previousMonthBudgetAdd()

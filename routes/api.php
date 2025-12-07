@@ -20,8 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/category',App\Http\Controllers\Api\CategoryController::class);//multiple permissions handled in controller
 
     // budget
-    Route::post('/budget/add/previous-month', [App\Http\Controllers\Api\BudgetController::class, 'previousMonthBudgetAdd']);
-    Route::apiResource('/budget',\App\Http\Controllers\Api\BudgetController::class);
+    Route::post('/budget-plan/add/previous-month', [App\Http\Controllers\Api\BudgetPlanController::class, 'previousMonthBudgetAdd']);
+    Route::apiResource('/budget-plan',\App\Http\Controllers\Api\BudgetPlanController::class);
 
     // income by
     Route::apiResource('/income-by',\App\Http\Controllers\Api\IncomeByController::class);

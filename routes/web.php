@@ -2,28 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', function () {
-    return view('auth.login');
-})->name('login');
-Route::get('/register', function () {
-    return view('auth.register');
-})->name('register');
+Route::view('/login', 'auth.login')->name('login');
+Route::view('/register', 'auth.register')->name('register');
 Route::redirect('/', '/dashboard');
-Route::get('/dashboard', function () {
-    return view('welcome');
-});
-Route::get('/category', function () {
-    return view('category');
-});
-Route::get('/budget-plan', function () {
-    return view('budget_plan');
-});
-Route::get('/income-by', function () {
-    return view('income_by');
-});
-Route::get('/expense', function () {
-    return view('expense');
-});
-Route::get('/income', function () {
-    return view('income');
-});
+Route::view('/dashboard', 'welcome');
+Route::view('/category', 'category');
+Route::view('/budget-plan', 'budget_plan');
+Route::view('/income-by', 'income_by');
+Route::view('/expense', 'expense');
+Route::view('/income', 'income');
+Route::view('/budget', 'budget');

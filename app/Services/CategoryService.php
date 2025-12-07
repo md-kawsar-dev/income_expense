@@ -17,6 +17,8 @@ class CategoryService
                 $query->where($key, $value);
             }
         }
+        // sort by category_type first Need second Want and  Savings
+        $query->orderByRaw("FIELD(category_type, 'Need', 'Want', 'Savings')");
         return $query->get();
     }
     public function getById(int $id)

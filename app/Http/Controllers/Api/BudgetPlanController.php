@@ -5,17 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
 use App\Http\Resources\BudgetResource;
-use App\Services\BudgetService;
+use App\Services\BudgetPlanService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class BudgetController extends Controller
+class BudgetPlanController extends Controller
 {
-    protected $budgetService;
-    public function __construct(BudgetService $budgetService)
+    protected $budgetPlanService;
+    public function __construct(BudgetPlanService $budgetPlanService)
     {
-        $this->budgetService = $budgetService;
+        $this->budgetPlanService = $budgetPlanService;
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class BudgetController extends Controller
     public function index(Request $request)
     {
         try {
-            $budgets = $this->budgetService->list($request->all());
+            $budgets = $this->budgetPlanService->list($request->all());
             return BudgetResource::collection($budgets->load(['category']));
         } catch (Exception $th) {
             return error($th->getMessage(),500);
@@ -38,7 +38,7 @@ class BudgetController extends Controller
         $data = $request->validated();
         try{
             $result = DB::transaction(function() use($data){
-               return $this->budgetService->create($data);
+               return $this->budgetPlanService->create($data);
             });
             return success(new BudgetResource($result),"Budget Added Successfully!");
         } catch (Exception $e) {
@@ -51,7 +51,7 @@ class BudgetController extends Controller
        
         try {
             $result = DB::transaction(function() {
-               return $this->budgetService->previousMonthBudgetAdd();
+               return $this->budgetPlanService->previousMonthBudgetAdd();
             });
             return success($result,"Previous Month Budgets Added Successfully!");
         } catch (\Exception $e) {
@@ -64,7 +64,7 @@ class BudgetController extends Controller
     public function show(string $id)
     {
         try {
-            $budget = $this->budgetService->getById($id);
+            $budget = $this->budgetPlanService->getById($id);
             $budget->load(['category']);
             return new BudgetResource($budget);
         } catch (Exception $e) {
@@ -80,7 +80,7 @@ class BudgetController extends Controller
         $data = $request->validated();
         try{
             $result = DB::transaction(function()use($data, $id){
-                return $this->budgetService->update($data, $id);
+                return $this->budgetPlanService->update($data, $id);
             });
             return success(new BudgetResource($result),"Budget Updated Successfully!");
         } catch (\Exception $e) {
@@ -95,7 +95,7 @@ class BudgetController extends Controller
     {
        try {
             DB::transaction(function () use ($id) {
-                return $this->budgetService->destroy($id);
+                return $this->budgetPlanService->destroy($id);
             });
             return success(null,"Budget Deleted Successfully!");
         } catch (Exception $e) {
