@@ -36,7 +36,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"name\": \"sample_text\",\n    \"role_id\": 8,\n    \"username\": \"sample_text\",\n    \"email\": \"user62@example.com\",\n    \"scope_id\": 8,\n    \"password\": \"sample_text\",\n    \"password_confirmation\": \"sample_text\"\n}",
+                            "raw": "{\n    \"name\": \"sample_text\",\n    \"role_id\": 0,\n    \"username\": \"sample_text\",\n    \"email\": \"user3@example.com\",\n    \"scope_id\": 0,\n    \"password\": \"sample_text\",\n\"password_confirmation\": \"sample_text\"\n}",
                             "options": []
                         }
                     }
@@ -210,7 +210,7 @@
                                 },
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n    \"name\": \"sample_text\",\n    \"role_id\": 3,\n    \"username\": \"sample_text\",\n    \"email\": \"user98@example.com\",\n    \"scope_id\": 0,\n    \"password\": \"sample_text\",\n    \"password_confirmation\": \"sample_text\"\n}",
+                                    "raw": "{\n    \"name\": \"sample_text\",\n    \"role_id\": 0,\n    \"username\": \"sample_text\",\n    \"email\": \"user37@example.com\",\n    \"scope_id\": 2,\n    \"password\": \"sample_text\"\n}",
                                     "options": []
                                 }
                             }
@@ -220,10 +220,10 @@
             ]
         },
         {
-            "name": "category",
+            "name": "expense-items",
             "item": [
                 {
-                    "name": "[GET] api/category",
+                    "name": "[GET] api/expense-items",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -239,19 +239,19 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/category",
+                            "raw": "{{base_url}}/api/expense-items",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "category"
+                                "expense-items"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "[POST] api/category",
+                    "name": "[POST] api/expense-items",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -267,24 +267,24 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/category",
+                            "raw": "{{base_url}}/api/expense-items",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "category"
+                                "expense-items"
                             ]
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"category_type\": \"sample_text\",\n    \"category_name\": \"sample_text\",\n    \"amount\": 10\n}",
+                            "raw": "{\n    \"expense_type\": \"sample_text\",\n    \"expense_item\": \"sample_text\",\n    \"amount\": 43\n}",
                             "options": []
                         }
                     }
                 },
                 {
-                    "name": "[GET] api/category/{category}",
+                    "name": "[GET] api/expense-items/{expense_item}",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -300,20 +300,20 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/category/{category}",
+                            "raw": "{{base_url}}/api/expense-items/{expense_item}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "category",
-                                "{category}"
+                                "expense-items",
+                                "{expense_item}"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "[PUT] api/category/{category}",
+                    "name": "[PUT] api/expense-items/{expense_item}",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -329,25 +329,25 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/category/{category}",
+                            "raw": "{{base_url}}/api/expense-items/{expense_item}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "category",
-                                "{category}"
+                                "expense-items",
+                                "{expense_item}"
                             ]
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"category_type\": \"sample_text\",\n    \"category_name\": \"sample_text\",\n    \"amount\": 24\n}",
+                            "raw": "{\n    \"expense_type\": \"sample_text\",\n    \"expense_item\": \"sample_text\",\n    \"amount\": 26\n}",
                             "options": []
                         }
                     }
                 },
                 {
-                    "name": "[DELETE] api/category/{category}",
+                    "name": "[DELETE] api/expense-items/{expense_item}",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -363,14 +363,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/category/{category}",
+                            "raw": "{{base_url}}/api/expense-items/{expense_item}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "category",
-                                "{category}"
+                                "expense-items",
+                                "{expense_item}"
                             ]
                         }
                     }
@@ -378,7 +378,7 @@
             ]
         },
         {
-            "name": "budget",
+            "name": "budget-plan",
             "item": [
                 {
                     "name": "add",
@@ -387,7 +387,7 @@
                             "name": "previous-month",
                             "item": [
                                 {
-                                    "name": "[POST] api/budget/add/previous-month",
+                                    "name": "[POST] api/budget-plan/add/previous-month",
                                     "request": {
                                         "method": "POST",
                                         "header": [
@@ -403,13 +403,13 @@
                                             }
                                         ],
                                         "url": {
-                                            "raw": "{{base_url}}/api/budget/add/previous-month",
+                                            "raw": "{{base_url}}/api/budget-plan/add/previous-month",
                                             "host": [
                                                 "{{base_url}}"
                                             ],
                                             "path": [
                                                 "api",
-                                                "budget",
+                                                "budget-plan",
                                                 "add",
                                                 "previous-month"
                                             ]
@@ -421,7 +421,7 @@
                     ]
                 },
                 {
-                    "name": "[GET] api/budget",
+                    "name": "[GET] api/budget-plan",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -437,19 +437,19 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/budget",
+                            "raw": "{{base_url}}/api/budget-plan",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "budget"
+                                "budget-plan"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "[POST] api/budget",
+                    "name": "[POST] api/budget-plan",
                     "request": {
                         "method": "POST",
                         "header": [
@@ -465,24 +465,24 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/budget",
+                            "raw": "{{base_url}}/api/budget-plan",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "budget"
+                                "budget-plan"
                             ]
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"year_month\": \"sample_text\",\n    \"category_id\": \"sample_text\",\n    \"amount\": 12\n}",
+                            "raw": "{\n    \"year_month\": \"sample_text\",\n    \"expense_item_id\": \"sample_text\",\n    \"amount\": 91\n}",
                             "options": []
                         }
                     }
                 },
                 {
-                    "name": "[GET] api/budget/{budget}",
+                    "name": "[GET] api/budget-plan/{budget_plan}",
                     "request": {
                         "method": "GET",
                         "header": [
@@ -498,20 +498,20 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/budget/{budget}",
+                            "raw": "{{base_url}}/api/budget-plan/{budget_plan}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "budget",
-                                "{budget}"
+                                "budget-plan",
+                                "{budget_plan}"
                             ]
                         }
                     }
                 },
                 {
-                    "name": "[PUT] api/budget/{budget}",
+                    "name": "[PUT] api/budget-plan/{budget_plan}",
                     "request": {
                         "method": "PUT",
                         "header": [
@@ -527,25 +527,25 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/budget/{budget}",
+                            "raw": "{{base_url}}/api/budget-plan/{budget_plan}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "budget",
-                                "{budget}"
+                                "budget-plan",
+                                "{budget_plan}"
                             ]
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"year_month\": \"sample_text\",\n    \"category_id\": \"sample_text\",\n    \"amount\": 15\n}",
+                            "raw": "{\n    \"year_month\": \"sample_text\",\n    \"expense_item_id\": \"sample_text\",\n    \"amount\": 48\n}",
                             "options": []
                         }
                     }
                 },
                 {
-                    "name": "[DELETE] api/budget/{budget}",
+                    "name": "[DELETE] api/budget-plan/{budget_plan}",
                     "request": {
                         "method": "DELETE",
                         "header": [
@@ -561,172 +561,14 @@
                             }
                         ],
                         "url": {
-                            "raw": "{{base_url}}/api/budget/{budget}",
+                            "raw": "{{base_url}}/api/budget-plan/{budget_plan}",
                             "host": [
                                 "{{base_url}}"
                             ],
                             "path": [
                                 "api",
-                                "budget",
-                                "{budget}"
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        {
-            "name": "income-by",
-            "item": [
-                {
-                    "name": "[GET] api/income-by",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/income-by",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "income-by"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "[POST] api/income-by",
-                    "request": {
-                        "method": "POST",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/income-by",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "income-by"
-                            ]
-                        },
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"name\": \"sample_text\"\n}",
-                            "options": []
-                        }
-                    }
-                },
-                {
-                    "name": "[GET] api/income-by/{income_by}",
-                    "request": {
-                        "method": "GET",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/income-by/{income_by}",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "income-by",
-                                "{income_by}"
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "[PUT] api/income-by/{income_by}",
-                    "request": {
-                        "method": "PUT",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/income-by/{income_by}",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "income-by",
-                                "{income_by}"
-                            ]
-                        },
-                        "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"name\": \"sample_text\"\n}",
-                            "options": []
-                        }
-                    }
-                },
-                {
-                    "name": "[DELETE] api/income-by/{income_by}",
-                    "request": {
-                        "method": "DELETE",
-                        "header": [
-                            {
-                                "key": "Accept",
-                                "value": "application/json",
-                                "type": "text"
-                            },
-                            {
-                                "key": "Content-Type",
-                                "value": "application/json",
-                                "type": "text"
-                            }
-                        ],
-                        "url": {
-                            "raw": "{{base_url}}/api/income-by/{income_by}",
-                            "host": [
-                                "{{base_url}}"
-                            ],
-                            "path": [
-                                "api",
-                                "income-by",
-                                "{income_by}"
+                                "budget-plan",
+                                "{budget_plan}"
                             ]
                         }
                     }
@@ -792,7 +634,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"amount\": 12,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"income_by_id\": \"sample_text\"\n}",
+                            "raw": "{\n    \"amount\": 40,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"income_by_id\": \"sample_text\"\n}",
                             "options": []
                         }
                     }
@@ -855,7 +697,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"amount\": 55,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"income_by_id\": \"sample_text\"\n}",
+                            "raw": "{\n    \"amount\": 24,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"income_by_id\": \"sample_text\"\n}",
                             "options": []
                         }
                     }
@@ -950,7 +792,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"amount\": 30,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"category_id\": \"sample_text\"\n}",
+                            "raw": "{\n    \"amount\": 29,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"expense_item_id\": \"sample_text\"\n}",
                             "options": []
                         }
                     }
@@ -1013,7 +855,7 @@
                         },
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"amount\": 81,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"category_id\": \"sample_text\"\n}",
+                            "raw": "{\n    \"amount\": 71,\n    \"date\": \"sample_text\",\n    \"description\": \"sample_text\",\n    \"expense_item_id\": \"sample_text\"\n}",
                             "options": []
                         }
                     }
@@ -1053,7 +895,7 @@
     "variable": [
         {
             "key": "base_url",
-            "value": "http://localhost"
+            "value": "http://income_expense.test"
         }
     ]
 }

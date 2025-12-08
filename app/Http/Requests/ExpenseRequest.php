@@ -25,7 +25,7 @@ class ExpenseRequest extends FormRequest
             'amount' => 'required|numeric|min:0',
             'date' => 'nullable|date',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,id',
+            'expense_item_id' => 'required|exists:expense_items,id',
         ];
     }
     public function messages()
@@ -36,8 +36,8 @@ class ExpenseRequest extends FormRequest
             'amount.min' => 'The amount must be at least 0.',
             'date.date' => 'The date is not a valid date.',
             'description.string' => 'The description must be a string.',
-            'category_id.required' => 'The category field is required.',
-            'category_id.exists' => 'The selected category is invalid.',
+            'expense_item_id.required' => 'The expense item field is required.',
+            'expense_item_id.exists' => 'The selected expense item is invalid.',
         ];
     }
 }

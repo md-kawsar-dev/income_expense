@@ -19,7 +19,7 @@ class Income extends Model
     ];
     public function incomeBy()
     {
-        return $this->belongsTo(IncomeBy::class, 'income_by_id');
+        return $this->belongsTo(User::class, 'income_by_id');
     }
     public function scope()
     {

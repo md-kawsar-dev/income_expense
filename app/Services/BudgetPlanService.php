@@ -23,14 +23,14 @@ class BudgetPlanService
 
         // Apply filters if any
         foreach ($filters as $key => $value) {
-            if (in_array($key, ['year', 'category_id', 'month'])) {
+            if (in_array($key, ['year', 'expense_item_id', 'month'])) {
                 $query->where($key, $value);
             }
         }
-        // sort by category_type first Need second Want and  Savings
-        $query->orderByRaw("(SELECT FIELD(category_type, 'Need', 'Want', 'Savings')
-                     FROM categories
-                     WHERE categories.id = budgets.category_id)");
+        // sort by expense_type first Need second Want and  Savings
+        $query->orderByRaw("(SELECT FIELD(expense_type, 'Need', 'Want', 'Savings')
+                     FROM expense_items
+                     WHERE expense_items.id = budgets.expense_item_id)");
         $query->orderBy('id', 'asc');
         return $query->get();
     }
@@ -51,16 +51,16 @@ class BudgetPlanService
         $existingBudgets = Budget::where('scope_id', scope_id())
             ->where('year', $date->year)
             ->where('month', $date->month)
-            ->pluck('category_id')
+            ->pluck('expense_item_id')
             ->toArray();
 
         $insertData = [];
 
         foreach ($previousBudgets as $prev) {
-            if (!in_array($prev->category_id, $existingBudgets)) {
+            if (!in_array($prev->expense_item_id, $existingBudgets)) {
                 $insertData[] = [
                     'scope_id' => scope_id(),
-                    'category_id' => $prev->category_id,
+                    'expense_item_id' => $prev->expense_item_id,
                     'amount' => $prev->amount,
                     'year' => $date->year,
                     'month' => $date->month,

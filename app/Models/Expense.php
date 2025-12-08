@@ -10,14 +10,19 @@ class Expense extends Model
 {
     use SoftDeletes,Filterable;
     protected $table = 'expenses';
-    protected $fillable = ['scope_id','category_id', 'amount', 'date', 'description'];
+    protected $fillable = ['scope_id','expense_item_id', 'amount', 'date', 'description'];
 
     public function scope()
     {
         return $this->belongsTo(User::class, 'scope_id');
     }
-    public function category()
+    public function expenseItem()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(ExpenseItem::class, 'expense_item_id');
+    }
+    // get date attribute in Y oct d
+    public function getDateAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('d M, Y');
     }
 }

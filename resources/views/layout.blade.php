@@ -27,6 +27,7 @@
     <!-- Icons css -->
     <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- Datatables css -->
+    <link href="assets/css/yearpicker.css" rel="stylesheet" type="text/css" />
     <link href="assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet"
         type="text/css" />
@@ -550,17 +551,18 @@
                         </a>
                     </li>
                     <li class="side-nav-item">
-                        <a href="/income" class="side-nav-link">
-                            <i class="uil-comments-alt"></i>
-                            <span> Income </span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
                         <a href="/expense" class="side-nav-link">
                             <i class="uil-comments-alt"></i>
                             <span> Expense </span>
                         </a>
                     </li>
+                    <li class="side-nav-item">
+                        <a href="/income" class="side-nav-link">
+                            <i class="uil-comments-alt"></i>
+                            <span> Income </span>
+                        </a>
+                    </li>
+                    
                     <li class="side-nav-item">
                         <a href="/budget-plan" class="side-nav-link">
                             <i class="uil-comments-alt"></i>
@@ -568,15 +570,9 @@
                         </a>
                     </li>
                     <li class="side-nav-item">
-                        <a href="/category" class="side-nav-link">
+                        <a href="/expense-item" class="side-nav-link">
                             <i class="uil-comments-alt"></i>
-                            <span> Category </span>
-                        </a>
-                    </li>
-                    <li class="side-nav-item">
-                        <a href="/income-by" class="side-nav-link">
-                            <i class="uil-comments-alt"></i>
-                            <span> Income By </span>
+                            <span> Expense Item </span>
                         </a>
                     </li>
                 </ul>
@@ -671,6 +667,7 @@
     <!--  Select2 Js -->
     <script src="assets/vendor/select2/js/select2.min.js"></script>
     <script src="assets/js/sweetalert2.min.js"></script>
+    <script src="assets/js/yearpicker.js"></script>
     <script src="assets/js/data/utility.js"></script>
     @yield('script')
     <script>
@@ -697,6 +694,43 @@
             }
         }, function(start) {
             $(".datepicker_year_month").val('');
+        });
+        $(".datepicker").inputmask("9999-99-99"); // mask YYYY-MM
+        $(".datepicker").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: true,
+            autoApply: true,
+            locale: {
+                format: "YYYY-MM-DD",
+                cancelLabel: 'Clear'
+            }
+        });
+        $(".datepicker").on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        });
+        $(".datepicker").on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val(''); // Cancel করলে input ফাঁকা
+        });
+        $(".datepicker_single").inputmask("9999-99-99"); // mask YYYY-MM
+        $(".datepicker_single").daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            autoUpdateInput: false,
+            autoApply: true,
+            locale: {
+                format: "YYYY-MM-DD",
+                cancelLabel: 'Clear'
+            }
+        });
+        $(".datepicker_single").on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('YYYY-MM-DD'));
+        });
+        $(".datepicker_single").on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val(''); // Cancel করলে input ফাঁকা
+        });
+        $(".yearpicker").yearpicker({
+            year:new Date().getFullYear()
         });
     </script>
 

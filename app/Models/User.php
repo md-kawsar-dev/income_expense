@@ -30,6 +30,7 @@ class User extends Authenticatable
         'scope_id',
         'name',
         'email',
+        'phone',
         'username',
         'scope_id',
         'password',
@@ -58,9 +59,9 @@ class User extends Authenticatable
         ];
     }
 
-    public function categories()
+    public function expenseItems()
     {
-        return $this->hasMany(Category::class,'scope_id','id');
+        return $this->hasMany(ExpenseItem::class,'scope_id','id');
     }
     public function role()
     {

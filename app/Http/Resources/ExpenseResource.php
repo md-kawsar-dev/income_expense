@@ -19,10 +19,10 @@ class ExpenseResource extends JsonResource
             'amount' => $this->amount,
             'date' => $this->date,
             'description' => $this->description,
-            'category_id' => $this->category_id,
+            'expense_item_id' => $this->expense_item_id,
             'scope_id' => $this->scope_id,
             'scope' => new UserResource($this->whenLoaded('scope')),
-            'category' => new CategoryResource($this->whenLoaded('category')),
+            'expense_item' => new ExpenseItemResource($this->whenLoaded('expenseItem')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             

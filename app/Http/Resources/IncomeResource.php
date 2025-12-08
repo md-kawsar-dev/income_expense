@@ -22,7 +22,7 @@ class IncomeResource extends JsonResource
             'income_by_id' => $this->income_by_id,
             'scope_id' => $this->scope_id,
             'scope' => new UserResource($this->whenLoaded('scope')),
-            'income_by' => new IncomeByResource($this->whenLoaded('incomeBy')),
+            'income_by' => new UserResource($this->whenLoaded('incomeBy')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             

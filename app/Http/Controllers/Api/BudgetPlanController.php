@@ -24,7 +24,7 @@ class BudgetPlanController extends Controller
     {
         try {
             $budgets = $this->budgetPlanService->list($request->all());
-            return BudgetResource::collection($budgets->load(['category']));
+            return BudgetResource::collection($budgets->load(['expenseItem']));
         } catch (Exception $th) {
             return error($th->getMessage(),500);
         }
@@ -65,7 +65,7 @@ class BudgetPlanController extends Controller
     {
         try {
             $budget = $this->budgetPlanService->getById($id);
-            $budget->load(['category']);
+            $budget->load(['expenseItem']);
             return new BudgetResource($budget);
         } catch (Exception $e) {
             return error($e->getMessage(), $e->getCode());

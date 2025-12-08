@@ -18,6 +18,31 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="year_month_search" class="form-label">Date</label>
+                                <input type="text" class="form-control datepicker"
+                                    id="year_month_search" placeholder="yyyy-mm" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="expense_item_id_search" class="form-label"><span class="">Expense
+                                        Item</span></label>
+                                <select class="form-control select2" id="expense_item_id_search" required>
+                                    <option>Select</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-primary mt-3" id="searchButton"> Search </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
                             <div class="border p-2">
                                 <h2 class="text-center">Need</h2>
                                 <table class="table table-bordered table-striped w-100" id="needTable">
@@ -79,5 +104,5 @@
         </div>
     @endsection
     @section('script')
-        <script src="assets/js/data/budget_plan.js"></script>
+        <script src="assets/js/data/budget.js"></script>
     @endsection

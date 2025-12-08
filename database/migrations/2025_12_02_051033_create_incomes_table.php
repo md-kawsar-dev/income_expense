@@ -18,7 +18,7 @@ return new class extends Migration
             $table->decimal('amount', 15, 2);
             $table->date('date');
             $table->text('description')->nullable();
-            $table->foreign('income_by_id')->references('id')->on('income_bies')->onDelete('cascade');
+            $table->foreign('income_by_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();

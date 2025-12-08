@@ -118,6 +118,7 @@
         
         <!-- App js -->
         <script src="assets/js/app.min.js"></script>
+        <script src="assets/js/data/utility.js"></script>
         <script>
             $(document).ready(function(){
                 $(".signup_btn").on('click',function(){
@@ -126,23 +127,23 @@
                     let password = $("#password").val();
                     let password_confirmation = $("#password_confirmation").val();
                     if(name == ''){
-                        alert("Name is required");
+                        Tost("Name is required", 'warning');
                         return false;
                     }
                     if(email == ''){
-                        alert("Email is required");
+                        Tost("Email is required", 'warning');
                         return false;
                     }
                     if(password == ''){
-                        alert("Password is required");
+                        Tost("Password is required", 'warning');
                         return false;
                     }
                     if(password_confirmation == ''){
-                        alert("Password confirmation is required");
+                        Tost("Password confirmation is required", 'warning');
                         return false;
                     }
                     if(password != password_confirmation){
-                        alert("Password and Confirm Password do not match");
+                        Tost("Password and Confirm Password do not match", 'warning');
                         return false;
                     }
                     $.ajax({
@@ -155,7 +156,7 @@
                             password_confirmation: password_confirmation,
                         },
                         success: function(response){
-                            alert("Registration successful!");
+                            Tost("Registration successful!", 'success');
                             window.location.href = "{{ route('login') }}";
                         },
                         error: function(xhr){
@@ -164,7 +165,7 @@
                             for(let key in errors){
                                 errorMessage += errors[key][0] + "\n";
                             }
-                            alert(errorMessage);
+                            Tost(errorMessage, 'error');
                         }
                     });
                 });

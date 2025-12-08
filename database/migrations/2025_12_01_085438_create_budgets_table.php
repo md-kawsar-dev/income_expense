@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('scope_id');
             $table->integer('year');
             $table->integer('month');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('expense_item_id');
             $table->decimal('amount', 15, 2);
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('expense_item_id')->references('id')->on('expense_items')->onDelete('cascade');
         });
     }
 

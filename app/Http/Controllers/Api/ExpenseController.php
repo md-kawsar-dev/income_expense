@@ -24,6 +24,7 @@ class ExpenseController extends Controller
     {
         try {
             $expenses = $this->expenseService->list($request->all());
+            $expenses->load(['expenseItem']);
             return ExpenseResource::collection($expenses);
         } catch (Exception $th) {
             return error($th->getMessage(), 500);

@@ -14,15 +14,15 @@ class Budget extends Model
         'scope_id',
         'year',
         'month',
-        'category_id',
+        'expense_item_id',
         'amount',
     ];
     public function scope()
     {
         return $this->belongsTo(User::class,'id','scope_id');
     }
-    public function category()
+    public function expenseItem()
     {
-        return $this->belongsTo(Category::class,'category_id','id');
+        return $this->belongsTo(ExpenseItem::class,'expense_item_id','id');
     }
 }

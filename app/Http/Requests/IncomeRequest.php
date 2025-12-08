@@ -25,7 +25,7 @@ class IncomeRequest extends FormRequest
             'amount' => 'required|numeric|min:0',
             'date' => 'nullable|date',
             'description' => 'nullable|string|max:255',
-            'income_by_id' => 'required|exists:income_bies,id',
+            'income_by_id' => 'required|exists:users,id',
         ];
     }
     public function messages()

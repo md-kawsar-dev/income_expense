@@ -1,6 +1,6 @@
 function fetchIncomeByData() {
     return $.ajax({
-        url: `${BASE_URL}/api/category`,
+        url: `${BASE_URL}/api/expense-items`,
         type: "GET",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -14,16 +14,16 @@ function fetchIncomeByData() {
     });
 }
 
-function initializeCategoryTable() {
+function initializeExpenseItemTable() {
     let index = 1;
     fetchIncomeByData().done(function (data) {
         console.log(data.data);
 
         // Destroy old instance if exists
-        if ($.fn.dataTable.isDataTable("#categoryTable")) {
-            $("#categoryTable").DataTable().clear().destroy();
+        if ($.fn.dataTable.isDataTable("#expenseItemTable")) {
+            $("#expenseItemTable").DataTable().clear().destroy();
         }
-        $("#categoryTable").DataTable({
+        $("#expenseItemTable").DataTable({
             responsive: true,
             processing: true,
             serverSide: false,
@@ -36,9 +36,14 @@ function initializeCategoryTable() {
                         return index++;
                     },
                 },
-                { data: "category_type", title: "Type" },
-                { data: "category_name", title: "Category" },
-                { data: "amount", title: "Amount" },
+                { data: "expense_type", title: "Type" },
+                { data: "expense_item", title: "Expense Item" },
+                { data:null, title: "Amount", render: function(data,type,row){
+                    if(row.amount === null || row.amount === undefined){
+                        return "";
+                    }
+                    return row.amount.toString().replace(/\.0+$/, "");
+                } },
                 {
                     data: null,
                     title: "Action",
@@ -62,31 +67,32 @@ function initializeCategoryTable() {
     });
 }
 function clearForm() {
-    $("#category_type").val("");
-    $("#category_name").val("");
+    $("#expense_type").val("");
+    $("#expense_item").val("");
     $("#store_id").val("");
     $(".add_update_text").text("Add");
 }
-function addCategory() {
-    let name = $("#category_name").val();
-    let type = $("#category_type").val();
+function getFormData(){
+    let type = $("#expense_type").val();
+    let item = $("#expense_item").val();
     let amount = $("#amount").val();
-    let data = { category_type: type,category_name: name, amount: amount };
-    
+    return { expense_type: type, expense_item: item, amount: amount };
+}
+function addExpenseItem() {
     $.ajax({
-        url: `${BASE_URL}/api/category`,
+        url: `${BASE_URL}/api/expense-items`,
         type: "POST",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
             accept: "application/json",
         },
         dataType: "json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(getFormData()),
         contentType: "application/json",
         success: function (response) {
-            Tost("Category added successfully!");
+            Tost("ExpenseItem added successfully!");
             clearForm();
-            initializeCategoryTable();
+            initializeExpenseItemTable();
         },
         error: function (xhr, status, error) {
             // validation error handling
@@ -99,33 +105,29 @@ function addCategory() {
                     });
                 }
             } else {
-                Tost("Failed to add Category.", "error");
+                Tost("Failed to add ExpenseItem.", "error");
                 console.error("AJAX Error:", error);
                 console.log("Response:", xhr.responseText);
             }
         },
     });
 }
-function updateCategory() {
+function updateExpenseItem() {
     let id = $("#store_id").val();
-    let name = $("#category_name").val();
-    let type = $("#category_type").val();
-    let amount = $("#amount").val();
-    let data = { category_type: type,category_name: name, amount: amount };
     $.ajax({
-        url: `${BASE_URL}/api/category/${id}`,
+        url: `${BASE_URL}/api/expense-items/${id}`,
         type: "PUT",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
             accept: "application/json",
         },
         dataType: "json",
-        data: JSON.stringify(data),
+        data: JSON.stringify(getFormData()),
         contentType: "application/json",
         success: function (response) {
             clearForm();
-            Tost("Category updated successfully!");
-            initializeCategoryTable();
+            Tost("ExpenseItem updated successfully!");
+            initializeExpenseItemTable();
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
@@ -140,9 +142,9 @@ function updateCategory() {
         },
     });
 }
-function deleteCategory(id) {
+function deleteExpenseItem(id) {
     $.ajax({
-        url: `${BASE_URL}/api/category/${id}`,
+        url: `${BASE_URL}/api/expense-items/${id}`,
         type: "DELETE",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -150,12 +152,12 @@ function deleteCategory(id) {
         },
         dataType: "json",
         success: function (response) {
-            initializeCategoryTable();
-            Tost("Category deleted successfully!");
+            initializeExpenseItemTable();
+            Tost("ExpenseItem deleted successfully!");
             // Reload the DataTable
         },
         error: function (xhr, status, error) {
-            Tost("Failed to delete Category.", "error");
+            Tost("Failed to delete ExpenseItem.", "error");
             console.error("AJAX Error:", error);
             console.log("Response:", xhr.responseText);
         },
@@ -172,13 +174,13 @@ $(document).ready(function () {
         let id = $("#store_id").val();
         if (id) {
             // Update existing category
-            updateCategory();
+            updateExpenseItem();
         } else {
             // Add new category
-            addCategory();
+            addExpenseItem();
         }
     });
-    $("#categoryTable")
+    $("#expenseItemTable")
         .off("click", ".delete_btn")
         .on("click", ".delete_btn", function (e) {
             e.preventDefault();
@@ -193,7 +195,7 @@ $(document).ready(function () {
                 confirmButtonText: "Yes, delete it!",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    deleteCategory(id);
+                    deleteExpenseItem(id);
                 }
             });
         })
@@ -202,7 +204,7 @@ $(document).ready(function () {
             let id = $(this).data("id");
             // Fetch existing data
             $.ajax({
-                url: `${BASE_URL}/api/category/${id}`,
+                url: `${BASE_URL}/api/expense-items/${id}`,
                 type: "GET",
                 headers: {
                     Authorization: "Bearer " + getAuthToken(),
@@ -210,9 +212,9 @@ $(document).ready(function () {
                 },
                 dataType: "json",
                 success: function (data) {
-                    $("#category_name").val(data.data.category_name);
-                    $("#category_type").val(data.data.category_type);
-                    $("#amount").val(data.data.amount);
+                    $("#expense_item").val(data.data.expense_item);
+                    $("#expense_type").val(data.data.expense_type);
+                    $("#amount").val(data.data.amount.toString().replace(/\.0+$/, ""));
                     $("#store_id").val(data.data.id);
                     $(".add_update_text").text("Update");
                 },
@@ -223,5 +225,5 @@ $(document).ready(function () {
             });
         });
 
-    initializeCategoryTable();
+    initializeExpenseItemTable();
 });

@@ -1,7 +1,6 @@
 <?php
 
-use App\Enums\CategoryEnum;
-use App\Models\Category;
+use App\Enums\ExpenseTypeEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,15 +12,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('expense_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('scope_id');
-            $table->enum('category_type', [
-                CategoryEnum::NEED->value,
-                CategoryEnum::WANT->value,
-                CategoryEnum::SAVINGS->value,
+            $table->enum('expense_type', [
+                ExpenseTypeEnum::NEED->value,
+                ExpenseTypeEnum::WANT->value,
+                ExpenseTypeEnum::SAVINGS->value,
             ]);
-            $table->string('category_name');
+            $table->string('expense_item');
             $table->decimal('amount')->default(0)->nullable();
             $table->timestamps();
             $table->softDeletes();

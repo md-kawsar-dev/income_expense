@@ -23,31 +23,33 @@
                         <div class="row">
                             <div class="mb-3">
                                 <label for="year_month" class="form-label required">Date</label>
-                                <input type="text" class="form-control datepicker_year_month datepicker_year_month_mask" id="year_month"
-                                    placeholder="yyyy-mm" required>
+                                <input type="text" class="form-control datepicker_year_month datepicker_year_month_mask"
+                                    id="year_month" placeholder="yyyy-mm" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="mb-3">
-                                <label for="category_id" class="form-label"><span class="required">Category</span> <a href="/category" class="btn btn-sm btn-primary">Add Category</a></label>
-                                <select class="form-control select2" id="category_id" required>
-                                    <option>Select</option>
-                                  
+                                <label for="expense_item_id" class="form-label"><span class="required">Expense Item</span>
+                                    <a href="/expense-item" class="btn btn-sm btn-primary">Add Expense Item</a></label>
+                                <select class="form-control select2" id="expense_item_id" required>
+                                    <option value="">Select</option>
+
                                 </select>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="mb-3">
                                 <label for="amount" class="form-label required">Amount</label>
-                                <input type="number" class="form-control" id="amount" placeholder="Enter Amount" required>
+                                <input type="number" class="form-control" id="amount" placeholder="Enter Amount"
+                                    required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="mb-3">
                                 <input type="hidden" name="store_id" id="store_id" value="">
                                 <button type="button" class="btn btn-primary" id="submitButton"> <span
-                                        class="add_update_text">Add</span> Category </button>
+                                        class="add_update_text">Add</span> Expense Item </button>
                             </div>
                         </div>
                     </form>
@@ -60,11 +62,36 @@
                     <h3 class="card-title">Budget Plan List</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered  category_table w-100" id="budgetPlanTable">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="year_month_search" class="form-label">Date</label>
+                                <input type="text" class="form-control datepicker_year_month datepicker_year_month_mask"
+                                    id="year_month_search" placeholder="yyyy-mm" required>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="expense_item_id_search" class="form-label"><span class="">Expense
+                                        Item</span></label>
+                                <select class="form-control select2" id="expense_item_id_search" required>
+                                    <option value="">Select</option>
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-primary mt-3" id="searchButton"> Search </button>
+                            </div>
+                        </div>
+
+                    </div>
+                    <table class="table table-bordered  expense_item_table w-100" id="budgetPlanTable">
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Category</th>
+                                <th>Expense Item</th>
                                 <th>Amount</th>
                                 <th>Action</th>
                             </tr>

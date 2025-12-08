@@ -15,14 +15,12 @@ async function loadExpenseItem() {
         categories.forEach((expense) => {
             html += `<option value="${expense.id}">${expense.expense_item} (${expense.expense_type})</option>`;
         });
-        $("#expense_item_id").html(html);
-        $("#expense_item_id_search").html(html);
-        $("#expense_item_id").select2();
+       $("#expense_item_id_search").html(html);
         $("#expense_item_id_search").select2();
     } catch (error) {
         let html = '<option value="">Select ExpenseItem</option>';
-        $("#expense_item_id").html(html);
-        $("#expense_item_id").select2();
+        $("#expense_item_id_search").html(html);
+        $("#expense_item_id_search").select2();
     }
 }
 
@@ -37,7 +35,7 @@ async function loadBudgetPlan() {
     let year_month_search = $("#year_month_search").val();
     let queryParams = new URLSearchParams();
     queryParams.append('year_month', year_month_search);
-    if (expense_item_id_search !== "" && expense_item_id_search !== null) {
+    if (expense_item_id_search) {
         queryParams.append('expense_item_id', expense_item_id_search);
     }
     let response = await fetch(`${BASE_URL}/api/budget-plan?${queryParams.toString()}`, {
@@ -179,164 +177,12 @@ async function deleteBudgetPlan(id) {
     Tost("Budget plan deleted successfully!");
     loadBudgetPlan();
 }
-function getInputData() {
-    let year_month = $("#year_month").val();
-    let expense_item_id = $("#expense_item_id").val();
-    let amount = $("#amount").val();
-    return {
-        year_month: year_month,
-        expense_item_id: expense_item_id,
-        amount: amount,
-    };
-}
-function clearForm() {
-    $("#year_month").val("");
-    $("#expense_item_id").val("").trigger("change");
-    $("#amount").val("");
-}
-function storeBudgetPlan() {
-    let data = getInputData();
-    $.ajax({
-        url: `${BASE_URL}/api/budget-plan`,
-        type: "POST",
-        headers: {
-            Authorization: "Bearer " + getAuthToken(),
-            Accept: "application/json",
-        },
-        data: data,
-        success: function (response) {
-            clearForm();
-            Tost("Budget plan saved successfully!");
-            $(".add_update_text").text("Add");
-            $("#store_id").val("");
-            loadBudgetPlan();
-        },
-        error: function (xhr, status, error) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-                for (let field in errors) {
-                    errors[field].forEach((msg) => {
-                        Tost(msg, "error");
-                    });
-                }
-            } else {
-                Tost("Failed to save budget plan.", "error");
-                console.error("AJAX Error:", error);
-                console.log("Response:", xhr.responseText);
-            }
-        },
-    });
-}
-function updateBudgetPlan() {
-    let id = $("#store_id").val();
-    let data = getInputData();
-    $.ajax({
-        url: `${BASE_URL}/api/budget-plan/${id}`,
-        type: "PUT",
-        headers: {
-            Authorization: "Bearer " + getAuthToken(),
-            Accept: "application/json",
-        },
-        data: data,
-        success: function (response) {
-            clearForm();
-            Tost("Budget plan updated successfully!");
-            $(".add_update_text").text("Add");
-            $("#store_id").val("");
-            loadBudgetPlan();
-        },
-        error: function (xhr, status, error) {
-            if (xhr.status === 422) {
-                let errors = xhr.responseJSON.errors;
-                for (let field in errors) {
-                    errors[field].forEach((msg) => {
-                        Tost(msg, "error");
-                    });
-                }
-            } else {
-                Tost("Failed to update budget plan.", "error");
-                console.error("AJAX Error:", error);
-                console.log("Response:", xhr.responseText);
-            }
-        },
-    });
-}
+
 $(document).ready(function () {
     if (!canEdit()) {
         $(".is_see").hide();
     }
     loadExpenseItem();
-    loadBudgetPlan();
-    $("#budgetPlanTable")
-        .on("click", ".edit-btn", function () {
-            let id = $(this).data("id");
-            // Implement edit functionality if needed
-            editBudgetPlan(id);
-        })
-        .on("click", ".delete_btn", function (e) {
-            e.preventDefault();
-            let id = $(this).data("id");
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteBudgetPlan(id);
-                }
-            });
-        });
-    $("#submitButton").on("click", function (e) {
-        e.preventDefault();
-        let store_id = $("#store_id").val();
-        if (store_id) {
-            // update
-            updateBudgetPlan();
-        } else {
-            // new
-            storeBudgetPlan();
-        }
-    });
-    $("#addPreviousMonthPlan").on("click", function (e) {
-        e.preventDefault();
-        Swal.fire({
-            title: "Are you sure?",
-            text: "This will add budget plans from the previous month. Existing plans for the current month will not be affected.",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, add it!",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: `${BASE_URL}/api/budget-plan/add/previous-month`,
-                    type: "POST",
-                    headers: {
-                        Authorization: "Bearer " + getAuthToken(),
-                        Accept: "application/json",
-                    },
-                    success: function (response) {
-                        Tost("Previous month plan added successfully!");
-                        loadBudgetPlan();
-                    },
-                    error: function (xhr, status, error) {
-                        Tost("Failed to add previous month plan.", "error");
-                        console.error("AJAX Error:", error);
-                        console.log("Response:", xhr.responseText);
-                    },
-                });
-            }
-        });
-    });
-    if (!canEdit()) {
-        $(".add_column").remove();
-        $(".list_column").removeClass("col-md-8").addClass("col-md-12");
-    }
     $("#searchButton").on("click", function (e) {
         e.preventDefault();
         loadBudgetPlan();

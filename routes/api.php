@@ -16,15 +16,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [UserController::class, 'index']);
     Route::post('/users/add', [UserController::class, 'store']);
     
-    // category
-    Route::apiResource('/category',App\Http\Controllers\Api\CategoryController::class);//multiple permissions handled in controller
+    // expense item
+    Route::apiResource('/expense-items',App\Http\Controllers\Api\ExpenseItemController::class);//multiple permissions handled in controller
 
     // budget
     Route::post('/budget-plan/add/previous-month', [App\Http\Controllers\Api\BudgetPlanController::class, 'previousMonthBudgetAdd']);
     Route::apiResource('/budget-plan',\App\Http\Controllers\Api\BudgetPlanController::class);
-
-    // income by
-    Route::apiResource('/income-by',\App\Http\Controllers\Api\IncomeByController::class);
     // income
     Route::apiResource('/income',\App\Http\Controllers\Api\IncomeController::class);
     // expense

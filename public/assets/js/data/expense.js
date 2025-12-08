@@ -1,147 +1,123 @@
-async function loadExpenseItem() {
+async function loadAddExpenseItem() {
+    let date = $("#date").val();
+    let queryParams = new URLSearchParams();
+    if (date) {
+        queryParams.append("year_month", date);
+    }
     try {
-        let response = await fetch(`${BASE_URL}/api/expense-items`, {
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + getAuthToken(),
-                Accept: "application/json",
-            },
-        });
+        let response = await fetch(
+            `${BASE_URL}/api/budget-plan?${queryParams.toString()}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + getAuthToken(),
+                    Accept: "application/json",
+                },
+            }
+        );
 
         let result = await response.json(); // Convert response → JSON
         let categories = result.data;
 
         let html = '<option value="">Select ExpenseItem</option>';
         categories.forEach((expense) => {
-            html += `<option value="${expense.id}">${expense.expense_item} (${expense.expense_type})</option>`;
+            html += `<option value="${expense.expense_item.id}">${expense.expense_item.expense_item} (${expense.expense_item.expense_type})</option>`;
         });
         $("#expense_item_id").html(html);
-        $("#expense_item_id_search").html(html);
         $("#expense_item_id").select2();
-        $("#expense_item_id_search").select2();
     } catch (error) {
         let html = '<option value="">Select ExpenseItem</option>';
         $("#expense_item_id").html(html);
         $("#expense_item_id").select2();
     }
 }
+async function loadSearchExpenseItem() {
+    let year = $("#year_search").val();
+    let month = $("#month_search").val();
+    let date = year && month ? `${year}-${String(month).padStart(2, "0")}` : null;
+    let queryParams = new URLSearchParams();
+    if (date) {
+        queryParams.append("year_month", date);
+    }
+    try {
+        let response = await fetch(
+            `${BASE_URL}/api/budget-plan?${queryParams.toString()}`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + getAuthToken(),
+                    Accept: "application/json",
+                },
+            }
+        );
 
-async function loadBudgetPlan() {
-    let budgetPlanTableBody = $("#budgetPlanTable tbody");
+        let result = await response.json(); // Convert response → JSON
+        let categories = result.data;
+
+        let html = '<option value="">Select ExpenseItem</option>';
+        categories.forEach((expense) => {
+            html += `<option value="${expense.expense_item.id}">${expense.expense_item.expense_item} (${expense.expense_item.expense_type})</option>`;
+        });
+        $("#expense_item_id_search").html(html);
+        $("#expense_item_id_search").select2();
+    } catch (error) {
+        let html = '<option value="">Select ExpenseItem</option>';
+        $("#expense_item_id_search").html(html);
+        $("#expense_item_id_search").select2();
+    }
+}
+
+async function loadExpenseList(year=null,month=null,date = null, expense_item_id = null) {
+    let expenseTableBody = $("#expenseTable tbody");
 
     // Loading message
-    budgetPlanTableBody.html(
+    expenseTableBody.html(
         `<tr><td class="text-center" colspan="100%">Loading...</td></tr>`
     );
-    let expense_item_id_search = $("#expense_item_id_search").val();
-    let year_month_search = $("#year_month_search").val();
     let queryParams = new URLSearchParams();
-    queryParams.append('year_month', year_month_search);
-    if (expense_item_id_search !== "" && expense_item_id_search !== null) {
-        queryParams.append('expense_item_id', expense_item_id_search);
+    if (date) {
+        queryParams.append("date", date);
     }
-    let response = await fetch(`${BASE_URL}/api/budget-plan?${queryParams.toString()}`, {
-        method: "GET",
-        headers: {
-            Authorization: "Bearer " + getAuthToken(),
-            Accept: "application/json",
-        },
-    });
+    if (year) {
+        queryParams.append("year", year);
+    }
+    if (month) {
+        queryParams.append("month", month);
+    }
+    if (expense_item_id) {
+        queryParams.append("expense_item_id", expense_item_id);
+    }
+    let response = await fetch(
+        `${BASE_URL}/api/expense?${queryParams.toString()}`,
+        {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + getAuthToken(),
+                Accept: "application/json",
+            },
+        }
+    );
 
     let result = await response.json();
-    let budgetPlans = result.data;
-    console.log("dataShow:" + budgetPlans);
-
-    budgetPlanTableBody.empty();
-
-    if (budgetPlans.length === 0) {
-        budgetPlanTableBody.html(
-            `<tr><td class="text-center" colspan="100%">No data available</td></tr>`
-        );
-        return;
-    }
-
-    // Sort budgetPlans by expense_type according to custom order
-    const expenseItemOrder = ["Need", "Want", "Savings"];
-    budgetPlans.sort((a, b) => {
-        return (
-            expenseItemOrder.indexOf(a?.expense_item?.expense_type) -
-            expenseItemOrder.indexOf(b?.expense_item?.expense_type)
-        );
-    });
-    console.log(budgetPlans);
-
+    let expenses = result.data;
+    expenseTableBody.empty();
     let row = "";
-    let totalAmount = 0;
-
-    let currentExpenseItem = null;
-    let expenseItemTotal = 0;
-
-    budgetPlans.forEach((plan, index) => {
-        totalAmount += parseFloat(plan.amount);
-        // If expense_type changes, insert expense_type header row
-        if (plan?.expense_item?.expense_type !== currentExpenseItem) {
-            // Print total of previous expense_type
-            if (currentExpenseItem !== null) {
-                row += `<tr class="bg-secondary">
-                            <th style="color:white;" colspan="2" class="text-end">${currentExpenseItem} Total</th>
-                            <th style="color:white;">${expenseItemTotal
-                                .toString()
-                                .replace(/\.0+$/, "")}</th>
-                            <th></th>
-                        </tr>`;
-            }
-
-            // New expense_type header
-            currentExpenseItem = plan?.expense_item?.expense_type;
-            expenseItemTotal = 0; // reset expense_type total
-
-            row += `<tr class="text-center">
-                        <th style="font-weight:bold;" colspan="4">${currentExpenseItem}</th>
-                    </tr>`;
-        }
-
-        expenseItemTotal += parseFloat(plan.amount);
-
-        // Normal budget row
+    if (expenses.length === 0) {
+        row = `<tr><td class="text-center" colspan="100%">No data available</td></tr>`;
+    }
+    
+    expenses.forEach((expense, index) => {
         row += `<tr>
             <td>${index + 1}</td>
-            <td>${plan?.expense_item?.expense_item}</td>
-            <td>${plan.amount.toString().replace(/\.0+$/, "")}</td>
+            <td>${expense.date}</td>
+            <td>${expense.expense_item.expense_item} (${expense.expense_item.expense_type})</td>
+            <td>${expense.amount}</td>
             <td>
-                ${
-                    canEdit()
-                        ? `<button class="btn btn-sm btn-primary edit-btn" data-id="${plan.id}">Edit</button>`
-                        : ""
-                }
-                ${
-                    canDelete()
-                        ? `<button class="btn btn-sm btn-danger delete-btn delete_btn" data-id="${plan.id}">Delete</button>`
-                        : ""
-                }
+            
             </td>
         </tr>`;
     });
-
-    // Print total for last expense_type
-    if (currentExpenseItem !== null) {
-        row += `<tr class="bg-secondary" >
-                    <th style="color:white;" colspan="2" class="text-end">${currentExpenseItem} Total</th>
-                    <th style="color:white;">${expenseItemTotal
-                        .toString()
-                        .replace(/\.0+$/, "")}</th>
-                    <th></th>
-                </tr>`;
-    }
-
-    // Grand total
-    row += `<tr>
-        <th colspan="2" class="text-end">Grand Total</th>
-        <th>${totalAmount.toString().replace(/\.0+$/, "")}</th>
-        <th></th>
-    </tr>`;
-
-    budgetPlanTableBody.html(row);
+    expenseTableBody.html(row);
 }
 
 async function editBudgetPlan(id) {
@@ -180,24 +156,29 @@ async function deleteBudgetPlan(id) {
     loadBudgetPlan();
 }
 function getInputData() {
-    let year_month = $("#year_month").val();
+    let date = $("#date").val();
     let expense_item_id = $("#expense_item_id").val();
     let amount = $("#amount").val();
+    let description = $("#description").val();
     return {
-        year_month: year_month,
+        date: date,
         expense_item_id: expense_item_id,
         amount: amount,
+        description: description,
     };
 }
 function clearForm() {
-    $("#year_month").val("");
+    $("#date").val("");
     $("#expense_item_id").val("").trigger("change");
     $("#amount").val("");
+    $("#description").val("");
+    $("#store_id").val("");
+    $(".add_update_text").text("Add");
 }
-function storeBudgetPlan() {
+function storeExpense() {
     let data = getInputData();
     $.ajax({
-        url: `${BASE_URL}/api/budget-plan`,
+        url: `${BASE_URL}/api/expense`,
         type: "POST",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -206,10 +187,8 @@ function storeBudgetPlan() {
         data: data,
         success: function (response) {
             clearForm();
-            Tost("Budget plan saved successfully!");
-            $(".add_update_text").text("Add");
-            $("#store_id").val("");
-            loadBudgetPlan();
+            Tost("Expense saved successfully!");
+            loadExpenseList();
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
@@ -220,14 +199,14 @@ function storeBudgetPlan() {
                     });
                 }
             } else {
-                Tost("Failed to save budget plan.", "error");
+                Tost("Failed to save expense.", "error");
                 console.error("AJAX Error:", error);
                 console.log("Response:", xhr.responseText);
             }
         },
     });
 }
-function updateBudgetPlan() {
+function updateExpense() {
     let id = $("#store_id").val();
     let data = getInputData();
     $.ajax({
@@ -265,7 +244,44 @@ $(document).ready(function () {
     if (!canEdit()) {
         $(".is_see").hide();
     }
-    loadExpenseItem();
+    $("#searchButton").on("click", function (e) {
+        e.preventDefault();
+        let year = $("#year_search").val();
+        let month = $("#month_search").val();
+        let date_search = $("#date_search").val();
+        let expense_item_id = $("#expense_item_id_search").val();
+
+        loadExpenseList(year, month, date_search, expense_item_id);
+    });
+    $("#refreshButton").on("click", function (e) {
+        e.preventDefault();
+        loadExpenseList();
+    });
+    $("#date").on("change click", function () {
+        if($(this).val()){
+            loadAddExpenseItem();
+        }
+    });
+    $("#year_search, #month_search").on("change", function () {
+        if($("#year_search").val() && $("#month_search").val()){
+            loadSearchExpenseItem();
+        }
+    });
+    loadAddExpenseItem();
+    loadSearchExpenseItem();
+    loadExpenseList();
+   
+    $("#submitButton").on("click", function (e) {
+        e.preventDefault();
+        let store_id = $("#store_id").val();
+        if (store_id) {
+            // update
+            updateExpense();
+        } else {
+            // new
+            storeExpense();
+        }
+    });
     loadBudgetPlan();
     $("#budgetPlanTable")
         .on("click", ".edit-btn", function () {
@@ -290,17 +306,7 @@ $(document).ready(function () {
                 }
             });
         });
-    $("#submitButton").on("click", function (e) {
-        e.preventDefault();
-        let store_id = $("#store_id").val();
-        if (store_id) {
-            // update
-            updateBudgetPlan();
-        } else {
-            // new
-            storeBudgetPlan();
-        }
-    });
+
     $("#addPreviousMonthPlan").on("click", function (e) {
         e.preventDefault();
         Swal.fire({
@@ -337,8 +343,5 @@ $(document).ready(function () {
         $(".add_column").remove();
         $(".list_column").removeClass("col-md-8").addClass("col-md-12");
     }
-    $("#searchButton").on("click", function (e) {
-        e.preventDefault();
-        loadBudgetPlan();
-    });
+    
 });
