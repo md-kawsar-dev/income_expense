@@ -59,4 +59,13 @@ class UserController extends Controller
             return error('Update failed: ' . $th->getMessage(), 500);
         }
     }
+    public function destroy(User $user)
+    {
+        try {
+            $user->delete();
+            return success(null, 'User deleted successfully', 200);
+        } catch (\Exception $th) {
+            return error('Deletion failed: ' . $th->getMessage(), 500);
+        }
+    }
 }

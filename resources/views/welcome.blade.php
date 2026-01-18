@@ -11,54 +11,45 @@
     </div>
     <div class="row pt-3">
         <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body bg-success text-dark">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <h4 class="fw-normal mt-0 text-truncate" title="Total Income">Total Income</h4>
-                            <h3 class="my-2 py-1 text-center total_income_balance"></h3>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> 
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body bg-danger text-white">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <h4 class="fw-normal mt-0 text-truncate" title="Total Expense">Total Expense</h4>
-                            <h3 class="my-2 py-1 text-center total_expense_balance"></h3>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body bg-primary text-white">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <h4 class="fw-normal mt-0 text-truncate" title="Total Balance">Total Balance</h4>
-                            <h3 class="my-2 py-1 text-center total_balance"></h3>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
-        <div class="col-md-6 col-xl-3">
-            <div class="card">
-                <div class="card-body bg-secondary text-white">
-                    <div class="row align-items-center">
-                        <div class="col-12">
-                            <h4 class="fw-normal mt-0 text-truncate" title="Total Savings">Total Savings</h4>
-                            <h3 class="my-2 py-1 text-center total_savings_balance"></h3>
-                        </div>
-                    </div> <!-- end row-->
-                </div> <!-- end card-body -->
-            </div> <!-- end card -->
-        </div> <!-- end col -->
+            <div class="card widget-flat text-bg-success">
+                <div class="card-body">
 
+                    <h6 class="text-uppercase text-reset mt-0" title="Total Income">Total Income</h6>
+                    <h3 class="mt-3 mb-3 text-reset total_income_balance"></h3>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card widget-flat text-bg-danger">
+                <div class="card-body">
+
+                    <h6 class="text-uppercase text-reset mt-0" title="Total Expense">Total Expense</h6>
+                    <h3 class="mt-3 mb-3 text-reset total_expense_balance"></h3>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card widget-flat text-bg-primary">
+                <div class="card-body">
+
+                    <h6 class="text-uppercase text-reset mt-0" title="Total Balance">Total Balance</h6>
+                    <h3 class="mt-3 mb-3 text-reset total_balance"></h3>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-3">
+            <div class="card widget-flat text-bg-secondary">
+                <div class="card-body">
+
+                    <h6 class="text-uppercase text-reset mt-0" title="Total Savings">Total Savings</h6>
+                    <h3 class="mt-3 mb-3 text-reset total_savings_balance"></h3>
+
+                </div>
+            </div>
+        </div>
     </div>
     <!-- end row -->
 @endsection

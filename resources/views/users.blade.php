@@ -68,12 +68,12 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Action</th>
                                 <th>Name</th>
                                 <th>Username</th>
                                 <th>Email</th>
                                 <th>Phone</th>
                                 <th>Role</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

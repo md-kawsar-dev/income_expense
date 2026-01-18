@@ -54,10 +54,10 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Action</th>
                                 <th>Type</th>
                                 <th>Expense Item</th>
                                 <th>Amount</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>

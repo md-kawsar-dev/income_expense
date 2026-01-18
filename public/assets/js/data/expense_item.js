@@ -36,14 +36,6 @@ function initializeExpenseItemTable() {
                         return index++;
                     },
                 },
-                { data: "expense_type", title: "Type" },
-                { data: "expense_item", title: "Expense Item" },
-                { data:null, title: "Amount", render: function(data,type,row){
-                    if(row.amount === null || row.amount === undefined){
-                        return "";
-                    }
-                    return row.amount.toString().replace(/\.0+$/, "");
-                } },
                 {
                     data: null,
                     title: "Action",
@@ -62,6 +54,15 @@ function initializeExpenseItemTable() {
                         `;
                     },
                 },
+                { data: "expense_type", title: "Type" },
+                { data: "expense_item", title: "Expense Item" },
+                { data:null, title: "Amount", render: function(data,type,row){
+                    if(row.amount === null || row.amount === undefined){
+                        return "";
+                    }
+                    return row.amount.toString().replace(/\.0+$/, "");
+                } },
+                
             ],
         });
     });

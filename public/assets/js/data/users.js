@@ -34,12 +34,7 @@ function initializeUsersTable() {
                         return index++;
                     },
                 },
-                { data: "name", title: "Name" },
-                { data: "username", title: "Username" },
-                { data: "email", title: "Email" },
-                { data: "phone", title: "Phone" },
-                { data: "role.name", title: "Role" },
-                {
+                 {
                     data: null,
                     title: "Action",
                     render: function (data, type, row) {
@@ -60,6 +55,12 @@ function initializeUsersTable() {
                         `;
                     },
                 },
+                { data: "name", title: "Name" },
+                { data: "username", title: "Username" },
+                { data: "email", title: "Email" },
+                { data: "phone", title: "Phone" },
+                { data: "role.name", title: "Role" },
+               
             ],
         });
     });
