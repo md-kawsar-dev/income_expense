@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BudgetResource extends JsonResource
+class BudgetPlanResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -22,8 +22,6 @@ class BudgetResource extends JsonResource
             'expense_item_id' => $this->expense_item_id,
             'expense_item' => new ExpenseItemResource($this->whenLoaded('expenseItem')),
             'user' => new UserResource($this->whenLoaded('scope')),
-            'total_expense' => $this->total_expense??0,
-            'remaining_amount' => $this->remaining_amount??0,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             

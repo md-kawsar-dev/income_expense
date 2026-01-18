@@ -35,7 +35,7 @@
                         <div class="row">
                             <div class="mb-3">
                                 <label for="amount" class="form-label required">Amount</label>
-                                <input type="number" class="form-control" id="amount" placeholder="Enter Amount"
+                                <input type="text" class="form-control" id="amount" placeholder="Enter Amount"
                                     required>
                             </div>
                         </div>
@@ -127,10 +127,11 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Action</th>
                                 <th>Date</th>
                                 <th>Expense Item</th>
                                 <th>Amount</th>
-                                <th>Action</th>
+                                <th>Description</th>
                             </tr>
                         </thead>
                         <tbody>

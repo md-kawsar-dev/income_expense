@@ -24,6 +24,7 @@ class IncomeController extends Controller
     {
         try {
             $incomes = $this->incomeService->list($request->all());
+            $incomes->load('incomeBy');
             return IncomeResource::collection($incomes);
         } catch (Exception $th) {
             return error($th->getMessage(), 500);

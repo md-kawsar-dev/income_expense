@@ -22,6 +22,7 @@
     <script src="assets/js/hyper-config.js"></script>
 
     <!-- App css -->
+    <link href="assets/vendor/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="assets/css/app-saas.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
     <!-- Icons css -->
@@ -34,7 +35,6 @@
 
     <link rel="stylesheet" href="assets/css/sweetalert2.min.css">
     <!-- Select2 css -->
-    <link href="assets/vendor/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="assets/css/custom.css">
 
     <script src="assets/js/data/login.js"></script>
@@ -575,6 +575,12 @@
                             <span> Expense Item </span>
                         </a>
                     </li>
+                    <li class="side-nav-item">
+                        <a href="/users" class="side-nav-link">
+                            <i class="uil-users-alt"></i>
+                            <span> Users </span>
+                        </a>
+                    </li>
                 </ul>
                 <!--- End Sidemenu -->
 
@@ -649,8 +655,8 @@
     <script src="assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
     <script src="assets/vendor/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
 
-    <!-- Dashboard App js -->
-    <script src="assets/js/pages/demo.dashboard.js"></script>
+    <!-- CRM Dashboard Demo App Js -->
+    <script src="assets/js/pages/demo.crm-dashboard.js"></script>
 
     <!-- App js -->
     <script src="assets/js/app.min.js"></script>
@@ -731,6 +737,9 @@
         });
         $(".yearpicker").yearpicker({
             year:new Date().getFullYear()
+        });
+        $(".select2").select2({
+            width: '100%'
         });
     </script>
 

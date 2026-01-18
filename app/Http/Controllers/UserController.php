@@ -22,13 +22,13 @@ class UserController extends Controller
         $this->userService = $userService;
     }
     public function index(Request $request)
-    {                   
-        $this->authorize('viewAny', User::class);
-        return UserResource::collection(User::latest()->paginate(Constant::PAGE_LIMIT));
+    {              
+        $users = $this->userService->list($request->all());
+        $users->load('role');
+        return UserResource::collection($users);
     }
     public function store(UserStoreRequest $request)
     {
-        $this->authorize('create', User::class);
         $validated = $request->validated();
         try {
             $result = DB::transaction(function () use ($validated) {
@@ -38,6 +38,25 @@ class UserController extends Controller
             return success(new UserResource($result), 'User registered successfully', 200);
         } catch (\Exception $th) {
             return error('Registration failed: ' . $th->getMessage(), 500);
+        }
+    }
+    public function show($id)
+    {
+        $user = $this->userService->getById($id);
+        $user->load('role');
+        return success(new UserResource($user), 'User fetched successfully', 200);
+    }
+    public function update(UserStoreRequest $request,User $user)
+    {
+        $validated = $request->validated();
+        try {
+            $result = DB::transaction(function () use ($user, $validated) {
+                return $this->userService->update($user, $validated);
+            });
+            $result->load('role');
+            return success(new UserResource($result), 'User updated successfully', 200);
+        } catch (\Exception $th) {
+            return error('Update failed: ' . $th->getMessage(), 500);
         }
     }
 }

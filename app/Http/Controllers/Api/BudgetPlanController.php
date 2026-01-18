@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetRequest;
-use App\Http\Resources\BudgetResource;
+use App\Http\Resources\BudgetPlanResource;
 use App\Services\BudgetPlanService;
 use Exception;
 use Illuminate\Http\Request;
@@ -24,7 +24,7 @@ class BudgetPlanController extends Controller
     {
         try {
             $budgets = $this->budgetPlanService->list($request->all());
-            return BudgetResource::collection($budgets->load(['expenseItem']));
+            return BudgetPlanResource::collection($budgets->load(['expenseItem']));
         } catch (Exception $th) {
             return error($th->getMessage(),500);
         }
@@ -40,7 +40,7 @@ class BudgetPlanController extends Controller
             $result = DB::transaction(function() use($data){
                return $this->budgetPlanService->create($data);
             });
-            return success(new BudgetResource($result),"Budget Added Successfully!");
+            return success(new BudgetPlanResource($result),"Budget Added Successfully!");
         } catch (Exception $e) {
             return error($e->getMessage(),$e->getCode());
         }
@@ -66,7 +66,7 @@ class BudgetPlanController extends Controller
         try {
             $budget = $this->budgetPlanService->getById($id);
             $budget->load(['expenseItem']);
-            return new BudgetResource($budget);
+            return new BudgetPlanResource($budget);
         } catch (Exception $e) {
             return error($e->getMessage(), $e->getCode());
         }
@@ -82,7 +82,7 @@ class BudgetPlanController extends Controller
             $result = DB::transaction(function()use($data, $id){
                 return $this->budgetPlanService->update($data, $id);
             });
-            return success(new BudgetResource($result),"Budget Updated Successfully!");
+            return success(new BudgetPlanResource($result),"Budget Updated Successfully!");
         } catch (\Exception $e) {
             return error($e->getMessage(),$e->getCode());
         }   

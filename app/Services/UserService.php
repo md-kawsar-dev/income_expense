@@ -7,6 +7,18 @@ use Illuminate\Support\Facades\Hash;
 
 class UserService
 {
+    public function list(array $filters = [])
+    {
+        $query = User::query()->where('scope_id', scope_id());
+
+        // Apply filters if any
+        foreach ($filters as $key => $value) {
+            if (in_array($key, ['name', 'email', 'username', 'role_id'])) {
+                $query->where($key, $value);
+            }
+        }
+        return $query->get();
+    }
     public function create(array $data)
     {
         $userName = strtolower(substr($data['name'], 0, 3)) . rand(1000, 9999);
@@ -15,7 +27,12 @@ class UserService
         $data['role_id'] = $data['role_id'] ?? 2; // default role_id to 2 (user)
         $data['scope_id'] = $data['scope_id'] ?? scope_id();
         
-        return User::create($data);
+        $user =  User::create($data);
+        if($user->scope_id == null){
+            $user->scope_id = $user->id;
+            $user->save();
+        }
+        return $user;
     }
 
     public function update(User $user, array $data)
@@ -42,5 +59,9 @@ class UserService
         }
 
         return null;
+    }
+    public function getById($id)
+    {
+        return User::findOrFail($id);
     }
 }

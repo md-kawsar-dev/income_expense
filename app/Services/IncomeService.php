@@ -10,7 +10,18 @@ class IncomeService
     public function list(array $filters = [])
     {
         $query = Income::query()->where('scope_id', scope_id());
-
+         if(!isset($filters['year']) && !isset($filters['month'])) {
+            $query->whereYear('date', now()->year)
+                  ->whereMonth('date', now()->month);
+        }
+        if(isset($filters['year'])) {
+            $query->whereYear('date', $filters['year']);
+            unset($filters['year']);
+        }
+        if(isset($filters['month'])) {
+            $query->whereMonth('date', $filters['month']);
+            unset($filters['month']);
+        }
         // Apply filters if any
         foreach ($filters as $key => $value) {
             if (in_array($key, ['income_by_id', 'date', 'amount'])) {

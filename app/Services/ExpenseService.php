@@ -10,6 +10,10 @@ class ExpenseService
     public function list(array $filters = [])
     {
         $query = Expense::query()->where('scope_id', scope_id());
+        if(!isset($filters['year']) && !isset($filters['month'])) {
+            $query->whereYear('date', now()->year)
+                  ->whereMonth('date', now()->month);
+        }
         if(isset($filters['year'])) {
             $query->whereYear('date', $filters['year']);
             unset($filters['year']);
@@ -18,6 +22,7 @@ class ExpenseService
             $query->whereMonth('date', $filters['month']);
             unset($filters['month']);
         }
+
         // Apply filters if any
         foreach ($filters as $key => $value) {
             if (in_array($key, ['expense_item_id', 'date', 'amount'])) {

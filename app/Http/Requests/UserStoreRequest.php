@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class UserStoreRequest extends FormRequest
 {
@@ -25,12 +25,35 @@ class UserStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            // role_id default to 2 (user) in UserService
+
             'role_id' => 'nullable|integer|exists:roles,id',
-            'username' => 'nullable|string|max:255|unique:users',
-            'email' => 'nullable|string|email|max:255|unique:users',
+
+            'username' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('users', 'username')->ignore(optional($this->user)->id),
+            ],
+
+            'email' => [
+                'nullable',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique('users', 'email')->ignore(optional($this->user)->id),
+            ],
+
             'scope_id' => 'nullable|integer|exists:users,id',
-            'password' => 'required|string|min:6|confirmed',
+
+            'password' => $this->user
+                ? ['nullable', 'string', 'min:6']
+                : ['required', 'string', 'min:6', 'confirmed'],
+            'phone' => [
+                'nullable',
+                'string',
+                'max:20',
+                Rule::unique('users', 'phone')->ignore(optional($this->user)->id)
+            ]
         ];
     }
     public function messages(): array
@@ -48,5 +71,4 @@ class UserStoreRequest extends FormRequest
 
         ];
     }
-   
 }

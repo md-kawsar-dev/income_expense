@@ -21,8 +21,8 @@ class Expense extends Model
         return $this->belongsTo(ExpenseItem::class, 'expense_item_id');
     }
     // get date attribute in Y oct d
-    public function getDateAttribute($value)
-    {
-        return \Carbon\Carbon::parse($value)->format('d M, Y');
-    }
+    // public function getDateAttribute($value)
+    // {
+    //     return \Carbon\Carbon::parse($value)->format('d M, Y');
+    // }
 }

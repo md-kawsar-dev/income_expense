@@ -11,3 +11,4 @@ Route::view('/budget-plan', 'budget_plan');
 Route::view('/expense', 'expense');
 Route::view('/income', 'income');
 Route::view('/budget', 'budget');
+Route::view('/users', 'users');

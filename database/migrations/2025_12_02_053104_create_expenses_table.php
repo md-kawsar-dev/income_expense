@@ -22,6 +22,7 @@ return new class extends Migration
             $table->softDeletes();
             $table->foreign('scope_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('expense_item_id')->references('id')->on('expense_items')->onDelete('cascade');
+            $table->index(['expense_item_id', 'scope_id', 'date', 'deleted_at'], 'idx_exp_item');
         });
     }
 

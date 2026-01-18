@@ -1,12 +1,7 @@
-async function loadAddExpenseItem() {
-    let date = $("#date").val();
-    let queryParams = new URLSearchParams();
-    if (date) {
-        queryParams.append("year_month", date);
-    }
+async function loadAddIncomeBy() {
     try {
         let response = await fetch(
-            `${BASE_URL}/api/budget-plan?${queryParams.toString()}`,
+            `${BASE_URL}/api/users`,
             {
                 method: "GET",
                 headers: {
@@ -17,77 +12,44 @@ async function loadAddExpenseItem() {
         );
 
         let result = await response.json(); // Convert response → JSON
-        let categories = result.data;
+        let users = result.data;
 
-        let html = '<option value="">Select ExpenseItem</option>';
-        categories.forEach((expense) => {
-            html += `<option value="${expense.expense_item.id}">${expense.expense_item.expense_item} (${expense.expense_item.expense_type})</option>`;
+        let html = '<option value="">Select Income By</option>';
+        users.forEach((user) => {
+            html += `<option value="${user.id}">${user.name}</option>`;
         });
-        $("#expense_item_id").html(html);
-        $("#expense_item_id").select2();
+        $("#income_by_id").html(html);
+        $("#income_by_id_search").html(html);
+        $("#income_by_id").select2();
+        $("#income_by_id_search").select2();
     } catch (error) {
-        let html = '<option value="">Select ExpenseItem</option>';
-        $("#expense_item_id").html(html);
-        $("#expense_item_id").select2();
+        let html = '<option value="">Select Income By</option>';
+        $("#income_by_id").html(html);
+        $("#income_by_id_search").html(html);
+        $("#income_by_id").select2();
+        $("#income_by_id_search").select2();
     }
 }
-async function loadSearchExpenseItem() {
-    let year = $("#year_search").val();
-    let month = $("#month_search").val();
-    let date =
-        year && month ? `${year}-${String(month).padStart(2, "0")}` : null;
-    let queryParams = new URLSearchParams();
-    if (date) {
-        queryParams.append("year_month", date);
-    }
-    try {
-        let response = await fetch(
-            `${BASE_URL}/api/budget-plan?${queryParams.toString()}`,
-            {
-                method: "GET",
-                headers: {
-                    Authorization: "Bearer " + getAuthToken(),
-                    Accept: "application/json",
-                },
-            }
-        );
-
-        let result = await response.json(); // Convert response → JSON
-        let categories = result.data;
-
-        let html = '<option value="">Select ExpenseItem</option>';
-        categories.forEach((expense) => {
-            html += `<option value="${expense.expense_item.id}">${expense.expense_item.expense_item} (${expense.expense_item.expense_type})</option>`;
-        });
-        $("#expense_item_id_search").html(html);
-        $("#expense_item_id_search").select2();
-    } catch (error) {
-        let html = '<option value="">Select ExpenseItem</option>';
-        $("#expense_item_id_search").html(html);
-        $("#expense_item_id_search").select2();
-    }
-}
-
-async function loadExpenseList(filters = {}) {
+async function loadIncomeList(filters = {}) {
     let {
         year = null,
         month = null,
         date = null,
-        expense_item_id = null,
+        income_by_id = null,
     } = filters;
-    let expenseTableBody = $("#expenseTable tbody");
+    let incomeTableBody = $("#incomeTable tbody");
 
     // Loading message
-    expenseTableBody.html(
+    incomeTableBody.html(
         `<tr><td class="text-center" colspan="100%">Loading...</td></tr>`
     );
     let queryParams = new URLSearchParams();
     if (date) queryParams.append("date", date);
     if (year) queryParams.append("year", year);
     if (month) queryParams.append("month", month);
-    if (expense_item_id) queryParams.append("expense_item_id", expense_item_id);
+    if (income_by_id) queryParams.append("income_by_id", income_by_id);
     let response = await fetch(
-        `${BASE_URL}/api/expense?${queryParams.toString()}`,
+        `${BASE_URL}/api/income?${queryParams.toString()}`,
         {
             method: "GET",
             headers: {
@@ -98,52 +60,49 @@ async function loadExpenseList(filters = {}) {
     );
 
     let result = await response.json();
-    let expenses = result.data;
-    expenseTableBody.empty();
+    let incomes = result.data;
+    
+    incomeTableBody.html("");
     let row = "";
-    if (expenses.length === 0) {
+    if (incomes.length === 0) {
         row = `<tr><td class="text-center" colspan="100%">No data available</td></tr>`;
     }
     let totalAmount = 0;
-    expenses.forEach((expense, index) => {
-        totalAmount += parseFloat(expense.amount);
+    incomes.forEach((income, index) => {
+        totalAmount += parseFloat(income.amount);
         row += `<tr>
             <td>${index + 1}</td>
             <td>
                 ${
                     canEdit()
-                        ? `<button class="btn btn-sm btn-primary edit-btn" data-id="${expense.id}">Edit</button>`
+                        ? `<button class="btn btn-sm btn-primary edit-btn" data-id="${income.id}">Edit</button>`
                         : ""
                 }
                 ${
                     canDelete()
-                        ? `<button class="btn btn-sm btn-danger delete_btn" data-id="${expense.id}">Delete</button>`
+                        ? `<button class="btn btn-sm btn-danger delete_btn" data-id="${income.id}">Delete</button>`
                         : ""
                 }
             </td>
-            <td>${moment(expense.date).format("DD MMM, YYYY")}</td>
-            <td>${expense.expense_item.expense_item} (${
-            expense.expense_item.expense_type
-        })</td>
-            <td>${expense.amount.toString().replace(/\.0+$/, "")}</td>
-            <td>${expense.description || ""}</td>
+            <td>${moment(income.date).format("DD MMM, YYYY")}</td>
+            <td>${income.income_by.name}</td>
+            <td>${Number(income.amount.toString().replace(/\.0+$/, "")).toLocaleString()}</td>
+            <td>${income.description || ""}</td>
         </tr>`;
     });
-    if (expenses.length > 0) {
+    if (incomes.length > 0) {
         row += `<tr>
             <td colspan="4" class="text-end"><strong>Total:</strong></td>
-            <td><strong>${totalAmount
-                .toString()
-                .replace(/\.0+$/, "")}</strong></td>
+            <td>${Number(totalAmount.toString().replace(/\.0+$/, "")).toLocaleString()}</td>
             <td></td>
         </tr>`;
     }
-    expenseTableBody.html(row);
+    incomeTableBody.html(row);
 }
 
-async function editExpense(id) {
+async function editIncome(id) {
     // Implement edit functionality if needed
-    let response = await fetch(`${BASE_URL}/api/expense/${id}`, {
+    let response = await fetch(`${BASE_URL}/api/income/${id}`, {
         method: "GET",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -151,21 +110,17 @@ async function editExpense(id) {
         },
     });
     let result = await response.json();
-    let expense = result.data;
-    $("#date").val(expense.date);
-    loadAddExpenseItem();
-    setTimeout(() => {
-        $("#expense_item_id").val(expense.expense_item_id);
-        $("#expense_item_id").select2();
-    }, 500);
-    $("#amount").val(expense.amount.toString().replace(/\.0+$/, ""));
-    $("#description").val(expense.description);
-    $("#store_id").val(expense.id);
+    let income = result.data;
+    $("#date").val(income.date);
+    $("#income_by_id").val(income.income_by_id).trigger("change");
+    $("#amount").val(income.amount.toString().replace(/\.0+$/, ""));
+    $("#description").val(income.description);
+    $("#store_id").val(income.id);
     $(".add_update_text").text("Update");
 }
-async function deleteExpense(id) {
+async function deleteIncome(id) {
     // Implement edit functionality if needed
-    let response = await fetch(`${BASE_URL}/api/expense/${id}`, {
+    let response = await fetch(`${BASE_URL}/api/income/${id}`, {
         method: "DELETE",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -173,20 +128,20 @@ async function deleteExpense(id) {
         },
     });
     if (!response.ok) {
-        Tost("Failed to delete expense.", "error");
+        Tost("Failed to delete income.", "error");
         return;
     }
-    Tost("Expense deleted successfully!");
-    loadExpenseList(getSearchData());
+    Tost("Income deleted successfully!");
+    loadIncomeList(getSearchData());
 }
 function getInputData() {
     let date = $("#date").val();
-    let expense_item_id = $("#expense_item_id").val();
+    let income_by_id = $("#income_by_id").val();
     let amount = $("#amount").val();
     let description = $("#description").val();
     return {
         date: date,
-        expense_item_id: expense_item_id,
+        income_by_id: income_by_id,
         amount: amount,
         description: description,
     };
@@ -195,26 +150,26 @@ function getSearchData() {
     let year = $("#year_search").val();
     let month = $("#month_search").val();
     let date = $("#date_search").val();
-    let expense_item_id = $("#expense_item_id_search").val();
+    let income_by_id = $("#income_by_id_search").val();
     return {
         year,
         month,
         date,
-        expense_item_id,
+        income_by_id,
     };
 }
 function clearForm() {
     $("#date").val("");
-    $("#expense_item_id").val("").trigger("change");
+    $("#income_by_id").val("").trigger("change");
     $("#amount").val("");
     $("#description").val("");
     $("#store_id").val("");
     $(".add_update_text").text("Add");
 }
-function storeExpense() {
+function storeIncome() {
     let data = getInputData();
     $.ajax({
-        url: `${BASE_URL}/api/expense`,
+        url: `${BASE_URL}/api/income`,
         type: "POST",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -223,8 +178,8 @@ function storeExpense() {
         data: data,
         success: function (response) {
             clearForm();
-            Tost("Expense saved successfully!");
-            loadExpenseList(getSearchData());
+            Tost("Income saved successfully!");
+            loadIncomeList(getSearchData());
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
@@ -235,18 +190,18 @@ function storeExpense() {
                     });
                 }
             } else {
-                Tost("Failed to save expense.", "error");
+                Tost("Failed to save income.", "error");
                 console.error("AJAX Error:", error);
                 console.log("Response:", xhr.responseText);
             }
         },
     });
 }
-function updateExpense() {
+function updateIncome() {
     let id = $("#store_id").val();
     let data = getInputData();
     $.ajax({
-        url: `${BASE_URL}/api/expense/${id}`,
+        url: `${BASE_URL}/api/income/${id}`,
         type: "PUT",
         headers: {
             Authorization: "Bearer " + getAuthToken(),
@@ -255,10 +210,10 @@ function updateExpense() {
         data: data,
         success: function (response) {
             clearForm();
-            Tost("Expense updated successfully!");
+            Tost("Income updated successfully!");
             $(".add_update_text").text("Add");
             $("#store_id").val("");
-            loadExpenseList(getSearchData());
+            loadIncomeList(getSearchData());
         },
         error: function (xhr, status, error) {
             if (xhr.status === 422) {
@@ -269,7 +224,7 @@ function updateExpense() {
                     });
                 }
             } else {
-                Tost("Failed to update expense.", "error");
+                Tost("Failed to update income.", "error");
                 console.error("AJAX Error:", error);
                 console.log("Response:", xhr.responseText);
             }
@@ -282,31 +237,27 @@ $(document).ready(function () {
     }
     $("#searchButton").on("click", function (e) {
         e.preventDefault();
-        loadExpenseList(getSearchData());
+        loadIncomeList(getSearchData());
     });
     $("#refreshButton").on("click", function (e) {
         e.preventDefault();
-        loadExpenseList();
+        loadIncomeList();
     });
     $("#date").on("change click", function () {
         if ($(this).val()) {
-            loadAddExpenseItem();
+            loadAddIncomeBy();
         }
     });
-    $("#year_search, #month_search").on("change", function () {
-        if ($("#year_search").val() && $("#month_search").val()) {
-            loadSearchExpenseItem();
-        }
-    });
+   
     $("#submitButton").on("click", function (e) {
         e.preventDefault();
         let store_id = $("#store_id").val();
         if (store_id) {
             // update
-            updateExpense();
+            updateIncome();
         } else {
             // new
-            storeExpense();
+            storeIncome();
         }
     });
 
@@ -333,11 +284,11 @@ $(document).ready(function () {
         }
     });
 
-    $("#expenseTable")
+    $("#incomeTable")
         .on("click", ".edit-btn", function () {
             let id = $(this).data("id");
             // Implement edit functionality if needed
-            editExpense(id);
+            editIncome(id);
         })
         .on("click", ".delete_btn", function (e) {
             e.preventDefault();
@@ -352,13 +303,12 @@ $(document).ready(function () {
                 confirmButtonText: "Yes, delete it!",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    deleteExpense(id);
+                    deleteIncome(id);
                 }
             });
         });
-    loadAddExpenseItem();
-    loadSearchExpenseItem();
-    loadExpenseList();
+    loadAddIncomeBy();
+    loadIncomeList();
 
 
     if (!canEdit()) {
